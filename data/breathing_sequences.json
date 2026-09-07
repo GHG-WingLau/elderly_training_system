@@ -1,0 +1,21 @@
+{
+  "practices": [
+    {"code": "DB01", "title": "Belly Breathing", "inhale_s": 3, "hold_s": 0, "exhale_s": 3, "cycles": 10, "focus": "Mind-muscle expansion awareness", "image": "assets/exercises/DB01.jpeg", "purpose": "Promotes diaphragmatic recruitment, reduces chest/accessory muscle strain, and enhances basal lung ventilation.", "instruction": "Sit or lie comfortably with one hand on your chest and the other on your belly. Inhale slowly through your nose for 3 seconds, letting your stomach rise against your hand while keeping your chest still. Exhale gently through your mouth for 3 seconds as your stomach falls. Perform 10 cycles (~2 minutes).", "audio": "assets/audio/DB01.mp3"},
+    {"code": "DB02", "title": "Core Brace", "inhale_s": 3, "hold_s": 2, "exhale_s": 3, "cycles": 9, "focus": "Deep core engagement during breath", "image": "assets/exercises/DB02.jpeg", "purpose": "Integrates diaphragmatic respiration with intra-abdominal pressure control to stabilize the lumbo-pelvic complex during breath cycles.", "instruction": "Inhale through your nose for 3 seconds, allowing your abdomen to expand. Hold your breath for 2 seconds while lightly tightening your abdominal muscles (like bracing for a soft touch). Slowly exhale through your mouth for 3 seconds while maintaining that gentle core tension. Perform 8 to 10 cycles (~2 minutes).", "audio": "assets/audio/DB02.mp3"},
+    {"code": "DB03", "title": "Breath_L1_L2", "inhale_s": 3, "hold_s": 0, "exhale_s": 5, "cycles": 9, "focus": "Parasympathetic relaxation", "image": "assets/exercises/DB03.jpeg", "purpose": "Leverages an extended expiratory phase to stimulate vagal nerve tone, promoting parasympathetic relaxation and lowering heart rate.", "instruction": "Inhale smoothly through your nose for 3 seconds without holding at the top. Gently blow out through your mouth for a long, slow 5-second exhale to fully release tension. Perform 8 to 10 cycles (~2 minutes).", "audio": "assets/audio/DB03.mp3"},
+    {"code": "DB04", "title": "Breath_L3_Pause", "inhale_s": 4, "hold_s": 2, "exhale_s": 6, "cycles": 7, "focus": "Lung capacity & oxygenation", "image": "assets/exercises/DB04.jpeg", "purpose": "Increases end-inspiratory hold time to improve alveolar gas exchange, optimize arterial oxygenation, and enhance lung compliance.", "instruction": "Take a deep breath in through your nose over 4 seconds. Pause and hold your breath in steady stillness for 2 seconds. Slowly exhale through your mouth over 6 seconds until your lungs feel empty. Perform 6 to 8 cycles (~2 minutes).", "audio": "assets/audio/DB04.mp3"},
+    {"code": "DB05", "title": "Breath_L4_8s", "inhale_s": 4, "hold_s": 0, "exhale_s": 8, "cycles": 6, "focus": "Peak lung exchange & deep core recoil", "image": "assets/exercises/DB05.jpeg", "purpose": "Uses pursed-lip breathing to create positive end-expiratory pressure (PEEP), preventing small airway collapse while maximizing elastic core recoil.", "instruction": "Inhale deeply through your nose for 4 seconds. Pucker your lips like blowing out a candle, then slowly release your breath through pursed lips for a full 8 seconds while feeling your deep core gently pull inward. Perform 5 to 6 cycles (~2 minutes).", "audio": "assets/audio/DB05.mp3"}
+  ],
+  "schedule": [
+    {"week": 0, "days_1_3": ["DB01", "DB02"], "days_4_6": ["DB03"], "day_7": []},
+    {"week": 1, "days_1_3": ["DB03"], "days_4_6": ["DB04"], "day_7": []},
+    {"week": 2, "days_1_3": ["DB04"], "days_4_6": ["DB05"], "day_7": []},
+    {"week": 3, "days_1_3": ["DB05"], "days_4_6": ["DB05"], "day_7": []},
+    {"week": 4, "days_1_3": ["DB05"], "days_4_6": ["DB05"], "day_7": []}
+  ],
+  "safety_text": {
+    "lightheadedness_valve": "If you feel lightheaded, breathless, or dizzy at any point, immediately stop counting and return to your normal, comfortable breathing pattern.",
+    "orthostatic_warning": "When moving between lying down, seated, or standing positions, pause for 10-15 seconds while seated. If dizziness occurs, remain seated until fully recovered.",
+    "chair_standard": "Use a sturdy, non-wheeled chair placed on a non-slip surface."
+  }
+}

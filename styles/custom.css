@@ -1,0 +1,65 @@
+/* WCAG 2.1 AA baseline for elderly users (Phase 5 expanded coverage).
+   Phase 6 amendments: --font-caption 16px -> 18px; native audio players
+   lifted to the 48px floor (#12). Support-footer styles moved INTO the
+   iframe fragment (utils/contact.py) — parent CSS cannot reach iframe
+   content, so the .support-contact rules were removed (#11-B v2).
+   Pinned by tests/test_css_baseline.py. */
+:root {
+  --font-base: 18px;
+  --font-caption: 18px;
+  --touch-min: 48px;
+}
+
+html, body, [data-testid="stAppViewContainer"] { font-size: var(--font-base); }
+
+/* Buttons, including form submit buttons */
+.stButton button, [data-testid="stFormSubmitButton"] button {
+  min-height: var(--touch-min) !important;
+  min-width: var(--touch-min) !important;
+  font-size: var(--font-base) !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+}
+
+/* Text / number inputs, text areas */
+.stTextInput input, .stNumberInput input, .stTextArea textarea {
+  min-height: var(--touch-min) !important;
+  font-size: var(--font-base) !important;
+}
+
+/* Selects */
+[data-baseweb="select"] > div {
+  min-height: var(--touch-min) !important;
+  font-size: var(--font-base) !important;
+}
+
+/* Checkboxes */
+.stCheckbox { min-height: var(--touch-min); }
+.stCheckbox label { font-size: var(--font-base); padding: 10px 0; }
+
+/* Native audio players (change #12) — the control measures 382x40
+   unpached (prototype); lift to the 48px touch-target floor */
+audio { height: 48px !important; }
+
+/* Captions & alerts */
+[data-testid="stCaptionContainer"] { font-size: var(--font-caption) !important; }
+[data-testid="stAlert"] { font-size: var(--font-base) !important; }
+
+/* Metrics */
+[data-testid="stMetricLabel"] { font-size: var(--font-caption) !important; }
+[data-testid="stMetricValue"] { font-size: 26px !important; font-weight: 700; }
+
+/* Expander headers */
+[data-baseweb="accordion"] [aria-expanded] {
+  min-height: var(--touch-min) !important;
+  font-size: var(--font-base) !important;
+}
+
+/* No sidebars/drawers in end-user views */
+[data-testid="stSidebar"] { display: none !important; }
+
+/* Keyboard focus ring */
+*:focus-visible {
+  outline: 3px solid #005fcc !important;
+  outline-offset: 2px !important;
+}

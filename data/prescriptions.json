@@ -1,0 +1,7 @@
+{
+  "0": {"sets": 2, "reps_min": 6, "reps_max": 8, "hold_s": 10, "rest_s_min": 60, "rest_s_max": 90},
+  "1": {"sets": 2, "reps_min": 8, "reps_max": 10, "hold_s": null, "rest_s_min": 60, "rest_s_max": 60},
+  "2": {"sets": 2, "reps_min": 10, "reps_max": 12, "hold_s": null, "rest_s_min": 45, "rest_s_max": 60},
+  "3": {"sets": 3, "reps_min": 10, "reps_max": 12, "hold_s": null, "rest_s_min": 45, "rest_s_max": 45},
+  "4": {"sets": 3, "reps_min": 12, "reps_max": 15, "hold_s": null, "rest_s_min": 30, "rest_s_max": 45}
+}

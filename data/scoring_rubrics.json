@@ -1,0 +1,35 @@
+{
+  "sarc_f": {
+    "items": [
+      {"name": "strength", "label": "Lifting/carrying ~10 lbs", "options": ["No difficulty", "Some difficulty", "Much difficulty / unable"]},
+      {"name": "walking", "label": "Walking across a room", "options": ["No difficulty", "Some difficulty", "Much difficulty / needs aid"]},
+      {"name": "rise_chair", "label": "Rising from a chair (5x)", "options": ["No difficulty", "Some difficulty", "Much difficulty / unable"]},
+      {"name": "climb_stairs", "label": "Climbing 10 steps", "options": ["No difficulty", "Some difficulty", "Much difficulty / unable"]},
+      {"name": "falls", "label": "Falls in past 12 months", "options": ["None", "1-3", "4 or more"]}
+    ],
+    "max": 10
+  },
+  "calf_circumference_cm": {
+    "M": {"normal_min": 36.0, "risk_max": 34.0},
+    "F": {"normal_min": 34.0, "risk_max": 33.0},
+    "unspecified_policy": "max"
+  },
+  "single_leg_stance_sec": {
+    "unisex": {"normal_min": 20.0, "risk_max": 10.0}
+  },
+  "chair_stand_30s": {
+    "M": {"normal_min": 14, "risk_max": 11},
+    "F": {"normal_min": 12, "risk_max": 9},
+    "unspecified_policy": "max"
+  },
+  "level_assignment": {
+    "sarc_f_override": 4,
+    "total_high": 8,
+    "age_high": 80,
+    "total_mid": 5,
+    "age_mid": 75,
+    "total_low": 3
+  },
+  "red_flags": ["chest_pain", "joint_replacement_under_6mo", "uncontrolled_bp_over_160_100", "two_or_more_recent_falls"],
+  "notes": "0-band and 2-band anchors derived directly from supplied clinical reference data (60-69 cohort). 1-band is interpolated and requires clinical sign-off at the Phase 1 gate. For users 70+ these 60-69 norms may over-score impairment, erring toward a safer (lower) level."
+}

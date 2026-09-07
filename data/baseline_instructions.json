@@ -1,0 +1,18 @@
+{
+  "intro": "These functional baseline measures evaluate muscle mass, static postural stability, and lower-body strength or endurances—key indicators for sarcopenia and fall risk.",
+  "measures": {
+    "calf": {
+      "description": "A screening tool for muscle mass and sarcopenia. A measurement below 31 cm generally indicates reduced muscle mass in older adults.",
+      "instruction": "Please sit comfortably on the edge of the chair with your feet flat on the floor and your knees bent at a 90-degree angle. Relax your legs completely. I will wrap a flexible measuring tape around the widest part of your calf muscle to measure the distance around it without pressing into your skin."
+    },
+    "single_leg_stance": {
+      "description": "Evaluates static balance, proprioception, and lateral hip stability. It measures the duration (up to 45 or 60 seconds) an individual can maintain balance on a single foot.",
+      "instruction_left": "Stand upright near a sturdy surface or wall for safety, but do not lean on it. Cross your arms over your chest. When I say 'go,' shift your weight onto your left foot and raise your right foot off the floor without letting your legs touch. Try to hold your balance as long as you comfortably can. If you touch the floor, uncross your arms, or move your standing foot, the timer will stop.",
+      "instruction_right": "We will repeat the exact same procedure on your right side. Shift your weight onto your right foot, cross your arms, lift your left foot off the ground, and maintain your balance as long as possible until you feel unsteady or hit the limit."
+    },
+    "chair_stand": {
+      "description": "Part of the Functional Fitness Test protocol, assessing functional lower-limb power, strength, and endurance. It counts the number of full stands completed within 30 seconds.",
+      "instruction": "Sit in the middle of a standard, armless chair placed against a wall so it won't slide. Keep your feet flat on the floor and cross your arms across your chest, resting your hands on opposite shoulders. When I say 'go,' rise up to a full standing position and then sit back down completely. Repeat this movement as many times as you safely can in 30 seconds. If you are halfway up when the timer ends, that still counts as a full stand."
+    }
+  }
+}

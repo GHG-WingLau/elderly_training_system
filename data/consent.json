@@ -1,0 +1,15 @@
+{
+  "version": "v1.1",
+  "full_text": "Terms of Participation, Health Waiver, and Privacy Notice\n\nBy creating an account and registering for this 5-week training program, you acknowledge and agree to the following:\n\n1. Voluntary Health & Safety Assumption of Risk\n\nNot Medical Advice: The exercises provided in this program are for general educational and physical training purposes only and do not replace professional medical advice, diagnosis, or treatment.\n\nAssumption of Risk: Physical exercise carries inherent risks, including muscle strain, injury, or severe medical events. You confirm that you are participating voluntarily and at your own risk.\n\nWaiver of Liability: You agree to fully release, discharge, and hold harmless the operators, owners, instructors, and developers of this program from any claims, liability, damages, or injuries arising from or related to your participation.\n\nMedical Clearance: If you have any pre-existing health conditions, dizziness, heart conditions, or mobility limits, you are strongly advised to consult a physician before starting. Stop exercising immediately if you feel pain, faintness, or discomfort.\n\n2. Data Security & Information Usage\n\nData Storage: We implement reasonable safety measures to protect your basic account information and self-reported performance metrics. However, no online system or electronic storage is completely secure.\n\nDisclaimer of Data Guarantee: By using this online platform, you acknowledge that the operators and owners do not guarantee absolute data security and shall not be held liable for unauthorized access, data loss, or technical breaches beyond reasonable control.\n\n3. General Service Agreement\n\nThis program is provided on an \"as-is\" and \"as-available\" basis without warranties of any kind, explicit or implied. The operators reserve the right to modify or discontinue content at any time.\n\nAgreement: I am 18+ and agree to the Health Waiver, Liability Release, and Privacy Terms. (Required to register)",
+  "micro": {
+    "heading": "Terms & Safety Waiver",
+    "lead": "By checking the checkbox, you confirm that:",
+    "points": [
+      "Health & Safety: This program is for general wellness, not medical advice. You participate voluntarily at your own risk. Consult your doctor before starting, and stop immediately if you feel pain or dizziness.",
+      "Liability Release: You release the program owners, instructors, and developers from any liability, claims, or damages resulting from injuries during these exercises.",
+      "Data Security: We protect your data using standard safety measures, but cannot guarantee 100% security over the internet. You use this service on an \"as-is\" basis."
+    ],
+    "checkbox_label": "I am 18+ and agree to the Health Waiver, Liability Release, and Privacy Terms.",
+    "required_note": "Required to register"
+  }
+}

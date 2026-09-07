@@ -1,0 +1,212 @@
+{
+  "C01": {
+    "chars": 227,
+    "mp3_sha256": "dc49ae8248e987af788022b42f4dd85f693ea10ec5a8e05826772f1fef9217aa",
+    "rate": "-15%",
+    "text_sha256": "93601a40097b3232be3db5064e5e8b6d190ce994dd9d22cf6a19eee7be54cc5b",
+    "voice": "en-US-AriaNeural"
+  },
+  "C02": {
+    "chars": 182,
+    "mp3_sha256": "cf2fd4632c56c6e076f3fac88a8711d1a478baee3bfa0a4dee21438813306fa6",
+    "rate": "-15%",
+    "text_sha256": "309a0ceeda176b934d793523eccb2696002da5c3e8510be6d5ceb401f09018dd",
+    "voice": "en-US-AriaNeural"
+  },
+  "C03": {
+    "chars": 204,
+    "mp3_sha256": "1fe3e7d152868c702996fd53e76af0be504e1373562e8d4cc2f71849ee8d0314",
+    "rate": "-15%",
+    "text_sha256": "fd350df57d7df2f658bef5d6b10dcf5e37cfe939e52e6d4fea343228bf2e9d7e",
+    "voice": "en-US-AriaNeural"
+  },
+  "C04": {
+    "chars": 262,
+    "mp3_sha256": "bdb57661550969668a641eaa87dd8be254583b82008490ffc25e2aa127d8de24",
+    "rate": "-15%",
+    "text_sha256": "6c671e9ae34334efcf1a543f485471e82f735641ecb087d91cb59180e5d678dd",
+    "voice": "en-US-AriaNeural"
+  },
+  "CM01": {
+    "chars": 197,
+    "mp3_sha256": "bc74cbc78719787b05b485a93d22967f65f0c80e4a7eb3517b96b8a8bc73183c",
+    "rate": "-15%",
+    "text_sha256": "7216e83e57ff1e082b9a395d31b73fa73842b6d63d2e32964ef1ac8d836d238a",
+    "voice": "en-US-AriaNeural"
+  },
+  "CM02": {
+    "chars": 249,
+    "mp3_sha256": "1fd0db8a29aebcda75412659a5b643e43e8ff6d7782e076ac0a0e8aa6b94c344",
+    "rate": "-15%",
+    "text_sha256": "f2b0eb94c033de97cdd6d88bbd116ae0e3c9e2dbb20765516dec9d178db57550",
+    "voice": "en-US-AriaNeural"
+  },
+  "CM03": {
+    "chars": 216,
+    "mp3_sha256": "f65843b9d281a39c306bef3897c38965bf0f1fdafb50c3d07758709729eeda92",
+    "rate": "-15%",
+    "text_sha256": "6cbc7819a52dcc231d5f61afaaa7ea5692eb19d93dee2a4f91d6165f71a18e76",
+    "voice": "en-US-AriaNeural"
+  },
+  "CM04": {
+    "chars": 243,
+    "mp3_sha256": "852a247f811d926721d11e34fe25a266662497439cadbd1e9a98de268c84fb3a",
+    "rate": "-15%",
+    "text_sha256": "968150c48703c1e05d077bd5ada32516e5f73433614f87390e0e80e151261ebf",
+    "voice": "en-US-AriaNeural"
+  },
+  "DB01": {
+    "chars": 304,
+    "mp3_sha256": "ce639dd67e0facfae335d769229873bd19534bb2e73c700516f91491ef666320",
+    "rate": "-15%",
+    "text_sha256": "2e4b4748f31574cd8a98bcc01b32940b4ca5543753253d03bd3b8225bcdafc76",
+    "voice": "en-US-AriaNeural"
+  },
+  "DB02": {
+    "chars": 312,
+    "mp3_sha256": "4cc1ade083cb1325f567d6f5c01b77dc8eda983860ae5f7bf42c21e78502928a",
+    "rate": "-15%",
+    "text_sha256": "1ad41de87113fb614f1505a7fa76de819e741b17c94338361205f07c266eb54e",
+    "voice": "en-US-AriaNeural"
+  },
+  "DB03": {
+    "chars": 206,
+    "mp3_sha256": "e33d472a530d0fdf5e3f3302f245b8d601e8030df6707a77dee4b560a2ca85a6",
+    "rate": "-15%",
+    "text_sha256": "10fb9b73a514541ea092f4fa276f2fad8c74fdee35ae07661c1bcfe8adf6300b",
+    "voice": "en-US-AriaNeural"
+  },
+  "DB04": {
+    "chars": 230,
+    "mp3_sha256": "5c619b48b72638e5e26f16898ad59ef90c36e18443639099cd0398ac3710f6a2",
+    "rate": "-15%",
+    "text_sha256": "e9fe01fcf1833cfe9ca3408260e7eb3e64faa520d273611113a8d306698fe422",
+    "voice": "en-US-AriaNeural"
+  },
+  "DB05": {
+    "chars": 248,
+    "mp3_sha256": "0a45cc5953e80099000cbb0f832b90d449ff977d813b72a547e59ba244ee20dd",
+    "rate": "-15%",
+    "text_sha256": "6b91b2e0b7e76b8bd7bdbcb71a6fb1ecc68b90546593f8c75b83d23320e0daa4",
+    "voice": "en-US-AriaNeural"
+  },
+  "G01": {
+    "chars": 221,
+    "mp3_sha256": "40ffc61a30164814db208054330a559802a40e80260274b68499703197ef4cd1",
+    "rate": "-15%",
+    "text_sha256": "8baffa6c3a7509d4b4e00a88d4f1c4740bafa1111e191cc17f55ea17d4247534",
+    "voice": "en-US-AriaNeural"
+  },
+  "G02": {
+    "chars": 236,
+    "mp3_sha256": "3bfa33f401dfdb7fd008c60a7014f77faf2e39980e2b659de13d8e6cd3559da6",
+    "rate": "-15%",
+    "text_sha256": "a4f16347fd6c4513ecff079fd13016c14533b4ca8a635db3c562822c584d615c",
+    "voice": "en-US-AriaNeural"
+  },
+  "G03": {
+    "chars": 254,
+    "mp3_sha256": "5dafdbf6daffb06f728967e010ac5798c70b1e710c4917237cb01de16bc66f58",
+    "rate": "-15%",
+    "text_sha256": "3b12a9036eb49f7342384e069afc1de57b509da873e169102fb53e5dd0e2e059",
+    "voice": "en-US-AriaNeural"
+  },
+  "G04": {
+    "chars": 233,
+    "mp3_sha256": "ade4cb1b28620cef1efebb41ede33645497d2ad6894b8abfd8670ab327157f3d",
+    "rate": "-15%",
+    "text_sha256": "34bbc91a92b189b9745300eb96e4c8dbad9e06c06f516529347f6f9b68aa18ed",
+    "voice": "en-US-AriaNeural"
+  },
+  "HF01": {
+    "chars": 195,
+    "mp3_sha256": "edf64642c55396d334591ecb3f60261d7dacacc4a9a9cb3a8061a33483e94b6c",
+    "rate": "-15%",
+    "text_sha256": "76ee21241bab3b15f7cd117e4554235b5a2cc83b154396d5600b2e0f0f1378ef",
+    "voice": "en-US-AriaNeural"
+  },
+  "HF02": {
+    "chars": 229,
+    "mp3_sha256": "4be1053a58f15698e669c81b39f6253e0e621decabaa81acef9ef686b61ab6f1",
+    "rate": "-15%",
+    "text_sha256": "94b971a7838a7a81027616b03f7567f15e6cdc88fb09d02b412579c45565bd54",
+    "voice": "en-US-AriaNeural"
+  },
+  "HF03": {
+    "chars": 187,
+    "mp3_sha256": "b3a410bb75e9f81c19afc9a386999bf840435763f7b2b86dbefc4abd8ca07859",
+    "rate": "-15%",
+    "text_sha256": "94a5abcd4195b00dd3fc76e806bac4df6de8b481e2d807b75c20067f8ff45377",
+    "voice": "en-US-AriaNeural"
+  },
+  "HF04": {
+    "chars": 254,
+    "mp3_sha256": "3648a5be9ec3f46c80c7f0c24754becc0b8716de4f5c444cdb700b9e06cd4d07",
+    "rate": "-15%",
+    "text_sha256": "7849f4b4094ddc5a1f279e9ba122b33a6e326418cc5c6c12c8163ad01e831cfb",
+    "voice": "en-US-AriaNeural"
+  },
+  "PC01": {
+    "chars": 230,
+    "mp3_sha256": "c4dad4703edcb608bcaeac396e02e46dbfcbb686347b8b09f2d485f65d275b95",
+    "rate": "-15%",
+    "text_sha256": "e419c429206e87d0108ee0ebf8a9eb2fbff9ab849b06681672e199407e3fdee4",
+    "voice": "en-US-AriaNeural"
+  },
+  "PC02": {
+    "chars": 257,
+    "mp3_sha256": "45e79a4b44e7bafaa2e9ca0f386378b3e9cd95d8636bce81f01ed3374b2e81a9",
+    "rate": "-15%",
+    "text_sha256": "36ac07c0d33f828777e12ea6f5c07e921653053b77d87c163d0113d86e5e86d8",
+    "voice": "en-US-AriaNeural"
+  },
+  "PC03": {
+    "chars": 260,
+    "mp3_sha256": "95391401c88d2bfe2d4ea5b5d095b0d1590f50852b23ca61df6b05d95eb85f81",
+    "rate": "-15%",
+    "text_sha256": "2cc6bb61743b941224153ff640e360c3c10017126e81630f02906e3406748f66",
+    "voice": "en-US-AriaNeural"
+  },
+  "PC04": {
+    "chars": 235,
+    "mp3_sha256": "da0d080c8c7c3623e15085d5d60783b01f5444e4ab3e6c9777e3e1c91a3f4411",
+    "rate": "-15%",
+    "text_sha256": "496499bfa164d3fe24f781d055713d45185c8354f15bc0fdc5892c433008a772",
+    "voice": "en-US-AriaNeural"
+  },
+  "SP01": {
+    "chars": 219,
+    "mp3_sha256": "02ddee869a5f7ecb272631d0cd9aed998ac3897b6ec9a7de47e1fe1a54709d36",
+    "rate": "-15%",
+    "text_sha256": "69f6c0971eb94a640d655e4391fbcf36c7b3501414ae649fa31dee3ad9b311e8",
+    "voice": "en-US-AriaNeural"
+  },
+  "SP02": {
+    "chars": 226,
+    "mp3_sha256": "c1b26632073bb6ba89a15f47323c32b87e56a622b6d177e5eca8f6c64b82d1b0",
+    "rate": "-15%",
+    "text_sha256": "72c3a40155b59126846f31ea85fa3724bbaafc8cdf39583d4aecf175c760f604",
+    "voice": "en-US-AriaNeural"
+  },
+  "SP03": {
+    "chars": 235,
+    "mp3_sha256": "c4e8f14d9f1596e0029e8b01b3d20b3f107623c9aadffd065b53178449df5993",
+    "rate": "-15%",
+    "text_sha256": "fa09eb88709d799282789f9bc8020b35d7e627cdb1e0b39febc693b2abdc7dfb",
+    "voice": "en-US-AriaNeural"
+  },
+  "SP04": {
+    "chars": 211,
+    "mp3_sha256": "6dedb964c11312cbdd6bd34a8b85092cd6bd6a377a713b843204f8fe35731636",
+    "rate": "-15%",
+    "text_sha256": "a226d69432eb942b6794bbd16702f107291e375e7f0cbc6617f0566036761371",
+    "voice": "en-US-AriaNeural"
+  },
+  "_meta": {
+    "engine": "edge-tts",
+    "generated_at": "2026-09-04T03:42:05.879854+00:00",
+    "note": "text_sha256 binds each mp3 to the exact instruction string it was generated from; a mismatch with data/*.json means stale audio \u2014 regenerate.",
+    "rate": "-15%",
+    "voice": "en-US-AriaNeural"
+  }
+}

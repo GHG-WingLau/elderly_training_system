@@ -1,0 +1,18 @@
+# Local Postgres for development + the test suite (strategy A).
+# Local Docker and production Neon share one dialect — no drift.
+#   docker compose up -d
+#   export DATABASE_URL=postgresql://elderly:elderly_dev@localhost:5432/elderly_test
+services:
+  elderly-db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: elderly
+      POSTGRES_PASSWORD: elderly_dev
+      POSTGRES_DB: elderly_test
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U elderly -d elderly_test"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
