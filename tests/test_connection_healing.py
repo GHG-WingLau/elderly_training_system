@@ -2,38 +2,30 @@
 
 Unit-level: _HealingConnection is driven with FAKE connections
 (_new_connection monkeypatched — no database, no Streamlit context).
-The deployed failure mode (idle drop → OperationalError on first
-execute) must heal transparently; genuine double-failure must surface
-(no infinite retry). These tests never touch the database (conftest's
-autouse reset still runs — harmless).
+These tests never touch the database (conftest's autouse reset still
+runs — harmless).
 
-v2 harness fixes (4 v1 failures — the PROXY behaved exactly as designed:
-caught, reconnected, retried; retries failed only because the scripted
-fakes had nothing left to return): (a) the reconnect queue seeded WITH
-the initial connection — every _reconnect re-served the dead conn →
-IndexError; queue is now conns[1:]; (b) post-heal actions are scripted
-explicitly.
-
-v3 (1 v2 failure, my four-character miss): _RollbackRaisingConn moved
-above _healing in the v2 rewrite and lost its no-arg constructor —
-_FakeConn requires 'script'. Restored: __init__ defaults the script to
-empty (rollback-raise needs none). RULE (extended): scripted fakes must
-script every action AND define every constructor they're instantiated
-with — move-and-rewrite of helper classes re-verifies call sites.
+v2 fixed the harness (reconnect queue seeded with the initial connection;
+post-heal actions now scripted). v3 restored a no-arg constructor.
+v4 (round-2 drill incident): SQLSTATE 25P03 IdleInTransactionSessionTimeout
+is NOT an OperationalError in psycopg 3.3.5 — it escaped the round-1
+handler; the catch set is now the DEAD_CONNECTION_ERRORS tuple, pinned
+here by construction (a 25P03-heals test) and by a tuple guard test.
 """
 from __future__ import annotations
 
 import pytest
 import psycopg
+from psycopg import errors as pg_errors
 
 from db import database as db_database
-from db.database import _HealingConnection
+from db.database import DEAD_CONNECTION_ERRORS, _HealingConnection
 
 
 class _FakeConn:
     """Scripted connection: execute/commit pop the next scripted action —
     an Exception to raise, or a value to return. An unscripted action is
-    an IndexError (the v1 lesson: script everything)."""
+    an IndexError (script everything, including post-heal actions)."""
 
     def __init__(self, script, name="fake"):
         self.script = list(script)
@@ -59,6 +51,8 @@ class _FakeConn:
 
 
 _OPS = lambda: psycopg.OperationalError("SSL connection has been closed")
+_25P03 = lambda: pg_errors.IdleInTransactionSessionTimeout(
+    "terminating connection due to idle-in-transaction timeout")
 
 
 class _RollbackRaisingConn(_FakeConn):
@@ -70,9 +64,8 @@ class _RollbackRaisingConn(_FakeConn):
 
 
 def _healing(monkeypatch, conns):
-    """Proxy over conns[0]; _new_connection serves conns[1:] in order —
-    reconnects get the NEXT scripted connection, never the initial one
-    (the v1 bug). An unscripted reconnect fails with a clear assertion."""
+    """Proxy over conns[0]; _new_connection serves conns[1:] in order.
+    An unscripted reconnect fails with a clear assertion."""
     queue = list(conns[1:])
 
     def _factory():
@@ -89,6 +82,17 @@ def test_execute_heals_after_idle_drop(monkeypatch):
     proxy = _healing(monkeypatch, [dead, fresh])
     assert proxy.execute("SELECT 1") == "row"   # retried on the fresh conn
     assert dead.closed                            # corpse closed
+
+
+def test_idle_in_transaction_timeout_heals(monkeypatch):
+    """THE round-2 drill incident: SQLSTATE 25P03 is NOT an
+    OperationalError in psycopg 3.3.5 — it escaped the round-1 handler
+    and must be in the reconnect-and-retry catch set."""
+    dead = _FakeConn([_25P03()], name="dead")
+    fresh = _FakeConn(["row"], name="fresh")
+    proxy = _healing(monkeypatch, [dead, fresh])
+    assert proxy.execute("SELECT 1") == "row"
+    assert dead.closed
 
 
 def test_double_failure_surfaces(monkeypatch):
@@ -120,3 +124,11 @@ def test_rollback_swallows_connection_death(monkeypatch):
     proxy = _healing(monkeypatch, [dead, fresh])
     proxy.rollback()                               # heals silently
     assert proxy.execute("TRUNCATE ...") == "truncated"
+
+
+def test_dead_connection_error_tuple_covers_known_kills():
+    """The catch set is a contract: both observed connection-death classes
+    (SSL/suspend OperationalError; Neon 25P03) must stay in the tuple —
+    extend it when new classes are observed, never narrow it silently."""
+    assert psycopg.OperationalError in DEAD_CONNECTION_ERRORS
+    assert pg_errors.IdleInTransactionSessionTimeout in DEAD_CONNECTION_ERRORS

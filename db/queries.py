@@ -3,19 +3,21 @@ Convention: test fixtures call writers with keyword arguments so signature
 drift fails loudly at the call site. (Positional use of create_user's
 first four parameters is preserved for the logic-test fixtures.)
 
-Step 2a (password auth + consent + sessions):
-- create_user extended: password_hash, consent_version,
-  consent_accepted_at (nullable — legacy seed fixtures omit them).
-  NOTE: the ON CONFLICT update set deliberately does NOT touch
-  password_hash/conssent columns; auth_view enforces a duplicate-email
-  gate BEFORE create_user, because the upsert alone would overwrite an
-  existing account's username/age/sex while keeping its old password.
-- get_user_by_credentials REMOVED (username+email matching retired).
-- Session-token functions (mechanism-independent — consumed by Step 2b
-  "remember me" in either the localStorage or query-param design):
-  create_session_token / get_session_user / delete_session_token /
-  purge_expired_sessions; 32-byte urlsafe tokens, TIMESTAMPTZ expiry,
-  opportunistic purge on creation.
+Transaction hygiene (deploy hotfix round 2): with autocommit=False, every
+SELECT opens an implicit transaction. READ functions MUST end with
+conn.rollback() — otherwise the cached connection idles IN an open
+transaction and Neon's idle_in_transaction_session_timeout (~5 min)
+terminates it server-side (the 2026-09-07 drill incident). Every read
+below follows the pattern; writes end with commit() as before. A read
+that forgets rollback still heals via DEAD_CONNECTION_ERRORS in
+db/database.py — but tests/test_transaction_hygiene.py pins the hygiene
+directly (pg_stat_activity state must be 'idle', never 'idle in
+transaction').
+
+Step 2a: create_user carries password_hash/consent columns (ON CONFLICT
+update set deliberately excludes them — auth_view's duplicate-email gate
+guards re-registration); session-token functions (30-day default,
+opportunistic purge).
 """
 from __future__ import annotations
 
@@ -53,6 +55,7 @@ def get_user(email: str) -> Optional[dict]:
     row = conn.execute(
         "SELECT * FROM users WHERE email = %s", (email,)
     ).fetchone()
+    conn.rollback()  # release the implicit read transaction
     return _row_to_dict(row)
 
 
@@ -76,6 +79,7 @@ def get_current_cycle(email: str) -> int:
     row = conn.execute(
         "SELECT current_cycle FROM users WHERE email = %s", (email,)
     ).fetchone()
+    conn.rollback()  # release the implicit read transaction
     return row["current_cycle"] if row else 1
 
 
@@ -133,6 +137,7 @@ def get_weekly_plan(email: str, cycle: int, week: int) -> Optional[str]:
         "WHERE user_email = %s AND cycle = %s AND week = %s",
         (email, cycle, week),
     ).fetchone()
+    conn.rollback()  # release the implicit read transaction
     return row["exercise_ids"] if row else None
 
 
@@ -164,6 +169,7 @@ def get_completed_days(email: str, cycle: int) -> set:
         "SELECT week, day FROM training_progress WHERE user_email = %s AND "
         "cycle = %s",
         (email, cycle)).fetchall()
+    conn.rollback()  # release the implicit read transaction
     return {(r["week"], r["day"]) for r in rows}
 
 
@@ -172,6 +178,7 @@ def get_completed_rests(email: str, cycle: int) -> set:
     rows = conn.execute(
         "SELECT week FROM rest_assessments WHERE user_email = %s AND cycle = %s",
         (email, cycle)).fetchall()
+    conn.rollback()  # release the implicit read transaction
     return {r["week"] for r in rows}
 
 
@@ -182,6 +189,7 @@ def get_rpe_scores_for_week(email: str, cycle: int, week: int) -> list:
         "WHERE user_email = %s AND cycle = %s AND week = %s AND day BETWEEN 1 "
         "AND 6",
         (email, cycle, week)).fetchall()
+    conn.rollback()  # release the implicit read transaction
     return [r["rpe_scores"] for r in rows]
 
 
@@ -190,6 +198,7 @@ def count_completed_workouts(email: str, cycle: int) -> int:
     row = conn.execute(
         "SELECT COUNT(*) AS n FROM training_progress "
         "WHERE user_email = %s AND cycle = %s", (email, cycle)).fetchone()
+    conn.rollback()  # release the implicit read transaction
     return row["n"]
 
 
@@ -218,6 +227,7 @@ def get_session_user(token: str) -> Optional[dict]:
         "WHERE s.token = %s AND s.expires_at > now()",
         (token,),
     ).fetchone()
+    conn.rollback()  # release the implicit read transaction
     return _row_to_dict(row)
 
 

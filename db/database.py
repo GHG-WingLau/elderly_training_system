@@ -1,23 +1,37 @@
 """Postgres connection handler (Phase 6 — Docker local / Neon production).
 
-Deploy hotfix (SSL idle-drop): Neon suspends idle computes (free tier,
-~5 min) and the pooled endpoint drops idle client connections — the
-cached long-lived connection dies between user actions. Deployed
-symptom: the first write after an idle gap raised OperationalError
-("SSL connection has been closed unexpectedly"), and WITHOUT healing
-the dead connection stays cached, failing every subsequent action until
-process recycle. Fix: get_connection() returns a SELF-HEALING proxy —
-OperationalError on execute triggers close + reconnect (schema
-re-applied, idempotent) + one retry. Safe because every app write is a
-single-statement UPSERT (idempotent by design) and every read is a
-stateless SELECT. Commit-failure window (dead socket between execute
-and commit) reconnects then re-raises — a user retry re-applies via
-UPSERT. prepare_threshold=None disables psycopg's automatic prepared
-statements (portable across poolers; negligible cost at beta scale).
+Deploy hotfix round 2 (idle-in-transaction, drill 2026-09-07): Neon
+enforces idle_in_transaction_session_timeout (~5 min) — a connection
+left in an OPEN transaction is terminated server-side (SQLSTATE 25P03,
+IdleInTransactionSessionTimeout). ROOT CAUSE: with autocommit=False every
+SELECT opens an implicit transaction and the READ functions in
+queries.py never committed/rolled back — the cached connection sat in an
+open read transaction between user actions. Two-layer fix:
+  1. QUERIES (prevention): every read ends with conn.rollback() — the
+     connection idles OUT of transaction, so 25P03 cannot fire in normal
+     operation (see db/queries.py). Local Docker Postgres has the timeout
+     disabled — which is why the suite never caught it; remote-branch
+     validation (DEPLOYMENT.md §1.3) exists for exactly this class.
+  2. PROXY (detection/healing): the catch set is the DEAD_CONNECTION_ERRORS
+     tuple — psycopg 3.3.5 does NOT map 25P03 under OperationalError
+     (empirical: the drill's exception escaped `except
+     psycopg.OperationalError` in the round-1 release). Both layers are
+     retained as defense in depth: a future read that forgets rollback
+     still heals.
 
-Connection URL resolution: DATABASE_URL env var (tests, dev shells,
-CI) — else st.secrets["database_url"] (Cloud; local secrets.toml —
-st.secrets raises when no file exists, hence the wrap). Neon: use the
+Round 1 (SSL idle-drop, still active): Neon suspends idle computes and
+the pooled endpoint drops idle clients — the cached connection dies
+between user actions. get_connection() returns a SELF-HEALING proxy:
+connection-class failure on execute → close + reconnect (schema
+re-applied, idempotent) + one retry. Safe because every app write is a
+single-statement UPSERT (Phase-1 idempotency) and every read is a
+stateless SELECT. Commit failure reconnects then re-raises (rare
+execute→commit window; user retry re-applies via UPSERT). Rollback heals
+silently (protects reset_database). prepare_threshold=None (pooler
+portability, defensive).
+
+Connection URL resolution: DATABASE_URL env var (tests, dev, CI) — else
+st.secrets["database_url"] (Cloud; local secrets.toml). Neon: use the
 POOLED connection string (host contains "-pooler").
 """
 from __future__ import annotations
@@ -27,9 +41,23 @@ from pathlib import Path
 
 import psycopg
 import streamlit as st
+from psycopg import errors as pg_errors
 from psycopg.rows import dict_row
 
 SCHEMA_PATH = Path(__file__).resolve().parent / "schema_postgres.sql"
+
+# Connection-death exceptions that trigger reconnect-and-retry.
+# psycopg 3.3.5 mapping note (empirical, drill 2026-09-07): SQLSTATE 25P03
+# (IdleInTransactionSessionTimeout) is NOT an OperationalError subclass —
+# it escaped the round-1 `except psycopg.OperationalError` handler.
+# OperationalError covers the 08/57/58-class deaths (incl. the SSL-closed
+# error); InterfaceError covers locally-closed connections. Extend this
+# tuple when a new connection-death class is observed — never narrow it.
+DEAD_CONNECTION_ERRORS = (
+    psycopg.OperationalError,
+    psycopg.InterfaceError,
+    pg_errors.IdleInTransactionSessionTimeout,
+)
 
 
 def _database_url() -> str:
@@ -67,14 +95,13 @@ def _new_connection():
 
 class _HealingConnection:
     """Duck-typed psycopg Connection proxy: reconnect-and-retry on
-    OPERATIONAL (connection-level) failures.
+    connection-death exceptions (DEAD_CONNECTION_ERRORS).
 
     - execute: one reconnect+retry (idempotent-write safe).
     - commit: reconnect then re-raise (rare idle-suspend window between
       execute and commit; UPSERT makes the user's retry safe).
     - rollback: reconnect silently (cleanup path — dead connections
       must not break the next test's reset).
-    Exposes cursor()/close() pass-throughs for schema init/cleanup.
     """
 
     def __init__(self, conn):
@@ -90,21 +117,21 @@ class _HealingConnection:
     def execute(self, query, params=None):
         try:
             return self._conn.execute(query, params)
-        except psycopg.OperationalError:
+        except DEAD_CONNECTION_ERRORS:
             self._reconnect()
             return self._conn.execute(query, params)
 
     def commit(self):
         try:
             self._conn.commit()
-        except psycopg.OperationalError:
+        except DEAD_CONNECTION_ERRORS:
             self._reconnect()
             raise
 
     def rollback(self):
         try:
             self._conn.rollback()
-        except psycopg.OperationalError:
+        except DEAD_CONNECTION_ERRORS:
             self._reconnect()
 
     def cursor(self, *args, **kwargs):
