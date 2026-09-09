@@ -1,0 +1,162 @@
+{
+  "app": {"page_title": "Elderly Training"},
+  "auth": {
+    "title": "🏃 Elderly Online Training System",
+    "tab_returning": "Returning User",
+    "tab_new": "New User",
+    "email": "Email",
+    "password": "Password",
+    "remember_label": "Keep me logged in on this device (30 days)",
+    "login_button": "Log In",
+    "login_error": "Email or password is incorrect.",
+    "terms_expander": "Read the full Terms of Participation, Health Waiver, and Privacy Notice",
+    "terms_download": "Download the full terms",
+    "email_req": "Email *",
+    "username_req": "Username *",
+    "age_req": "Age *",
+    "sex_label": "Sex (used for calf & chair-stand norms)",
+    "password_caption": "Choose a password of at least {min_length} characters. ({required_note} below.)",
+    "password_req": "Password *",
+    "confirm_req": "Confirm password *",
+    "register_button": "Create Account",
+    "err_required": "Email and username are required.",
+    "err_pw_length": "Password must be at least {min_length} characters.",
+    "err_pw_mismatch": "Passwords do not match.",
+    "err_consent": "Please confirm the Health Waiver and Privacy Terms to register.",
+    "err_exists": "An account with this email already exists. Please log in instead.",
+    "sex_option_unspecified": "Prefer not to say",
+    "sex_option_male": "Male",
+    "sex_option_female": "Female"
+  },
+  "hub": {
+    "title": "Welcome, {username} 👋",
+    "info": "**Level:** {level} · **Cycle** {cycle} · **Week** {week} · **Day** {day}",
+    "rest_day": "Today is your **rest & review day**. Light movement only.",
+    "start_review": "Start Weekly Review",
+    "workout_day": "Today's session: **breathing + 3 exercises** (~15–30 min).",
+    "start_workout": "Start Today's Workout",
+    "bookmark_tip": "💡 Stay logged in: bookmark this page now — on your phone, use Add to Home Screen. Next time, your bookmark opens straight to this page, with no need to log in again.",
+    "logout": "Log out"
+  },
+  "breathing": {
+    "title": "Stage 1 — Breathing",
+    "no_session": "No breathing session scheduled for today.",
+    "cadence": "**Inhale** {inhale_s}s · **Hold** {hold_s}s · **Exhale** {exhale_s}s · **{cycles} cycles**",
+    "start_circle": "▶ Start the breathing circle — {title}",
+    "stop_circle": "⏹ Stop the breathing circle — {title}",
+    "running_guidance": "Follow the circle with your breath — it stops by itself after {cycles} cycles.",
+    "start_guidance": "When you are ready, tap Start — the circle will move with your breath and stop by itself after {cycles} cycles.",
+    "start_exercises": "Start Exercises",
+    "illustration_caption": "Illustration: {title}"
+  },
+  "training": {
+    "title": "Stage 2 — Exercises",
+    "level_info": "**Level** {level} · {prescription}",
+    "position": "**Position:** {position_cue}",
+    "rpe_prompt": "How hard did that feel? — {title}",
+    "rpe_1": "😃 1 — Very Easy",
+    "rpe_2": "🙂 2 — Easy",
+    "rpe_3": "😐 3 — Moderate",
+    "rpe_4": "😣 4 — Hard",
+    "rpe_5": "😫 5 — Very Hard",
+    "submit": "Submit Workout"
+  },
+  "rest": {
+    "title": "Rest & Review — Week {week}",
+    "light_movement": "Light movement only. Complete the checks below to finish your week.",
+    "metric_label": "Average effort this week (RPE)",
+    "induction": "Induction week — checks are recorded as your baseline. No adjustment is applied to Week 1.",
+    "hard": "This week felt hard — next week's volume will be reduced.",
+    "easy": "This week felt easy — next week's volume will increase slightly.",
+    "moderate": "This week felt just right — volume stays the same.",
+    "next_prescription": "**Next week's prescription:** {prescription}",
+    "regression_warning": "⚠️ You've reported high effort for **two weeks in a row**. For your comfort and safety, your level will be adjusted from **{current_level}** to **{new_level}**.",
+    "regression_ack": "I understand my level will change to {n}.",
+    "hard_streak": "Two hard weeks in a row — you are already at the safest level ({n}). Your volume will be reduced instead.",
+    "recall": "How many exercises can you remember learning this week?",
+    "reflection": "How does your body feel? (optional)",
+    "sts": "Chair sit-to-stand — cycles in 15 seconds",
+    "sls_left": "Single-leg stance — left (sec)",
+    "sls_right": "Single-leg stance — right (sec)",
+    "submit": "Complete Weekly Review",
+    "ack_error": "Please confirm the level change above to continue."
+  },
+  "summary": {
+    "title": "Workout Complete! 🎉",
+    "completed": "**Exercises completed:** {n}",
+    "avg_rpe": "**Average RPE:** {avg} / 5",
+    "return_hub": "Return to Daily Hub"
+  },
+  "program_complete": {
+    "title": "🎉 Program Complete!",
+    "congrats": "You completed **{n} workouts** across 5 weeks, {username} — outstanding work!",
+    "choose": "Choose how you'd like to continue:",
+    "retake": "Retake Assessment & Restart",
+    "restart": "Restart with Current Level"
+  },
+  "wizard": {
+    "title": "Welcome! Let's complete your assessment.",
+    "step1": "Step 1 of 4 — Safety screening",
+    "step0_caption": "Check all boxes that apply to you. If none apply, leave them unchecked and press Continue.",
+    "continue": "Continue",
+    "step4": "Step 4 of 4 — Your comfort preference",
+    "preference_label": "Your comfort preference",
+    "preference_0": "Chair-Assisted",
+    "preference_1": "Seated",
+    "preference_2": "Supported Standing",
+    "preference_3": "Independent Standing",
+    "preference_4": "Dynamic Standing",
+    "review": "Review and confirm",
+    "red_flags_label": "**Red flags:** {red_flags}",
+    "red_flags_none": "None",
+    "red_flag_warning": "A safety red flag was reported. Your level is set to **{n}** for your safety.",
+    "metrics": "**SARC-F:** {sarc_f}/10 · **Calf:** {calf} · **Balance:** {balance} · **Chair-stand:** {chair_stand}",
+    "total": "**Total:** {total}/16 (lower = higher function)",
+    "preference_summary": "**Your preference:** {preference}",
+    "assigned_level": "### Assigned level: {level}",
+    "confirm": "Confirm and start training"
+  },
+  "sarc_f": {
+    "subheader": "SARC-F Questionnaire",
+    "caption": "Answer each question based on your current ability."
+  },
+  "baseline": {
+    "subheader": "Baseline Measures",
+    "caption": "Use a sturdy, non-wheeled chair on a non-slip surface.",
+    "label_calf": "Enter your calf circumference (cm)",
+    "label_sls_l": "Enter your single-leg stance time — left leg (sec)",
+    "label_sls_r": "Enter your single-leg stance time — right leg (sec)",
+    "label_chair": "Enter your 30-second chair stand count (reps)",
+    "caption_calf": "Calf circumference measurement",
+    "caption_sls_l": "Single-leg stance — left",
+    "caption_sls_r": "Single-leg stance — right",
+    "caption_chair": "30-second chair stand"
+  },
+  "prescription": {
+    "template_hold": "{sets} sets · {reps_min}–{reps_max} reps (or {hold}s hold) · rest {rest}s",
+    "template_no_hold": "{sets} sets · {reps_min}–{reps_max} reps · rest {rest}s"
+  },
+  "assets": {
+    "audio_hint": "🔊 Tap play to hear these instructions",
+    "image_fallback": "[image: {label}]"
+  },
+  "contact": {
+    "lead": "Need help? Email us at",
+    "anchor_aria": "Email the training team",
+    "img_alt": "Email address of the support team",
+    "runtime_aria_prefix": "Email us at "
+  },
+  "picker": {
+    "label": "Select your preferred language / 請選擇你的語言",
+    "display_en": "English",
+    "display_zh_hk": "繁體中文（香港）",
+    "display_zh_tw": "繁體中文（台灣）"
+  },
+  "levels": {
+    "Level 0": "Level 0 (Chair-Assisted)",
+    "Level 1": "Level 1 (Seated)",
+    "Level 2": "Level 2 (Supported Standing)",
+    "Level 3": "Level 3 (Independent Standing)",
+    "Level 4": "Level 4 (Dynamic Standing)"
+  }
+}

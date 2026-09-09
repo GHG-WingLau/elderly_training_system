@@ -20,6 +20,13 @@ still orients (Level/Cycle/Week/Day) on entry.
 Card order: title -> purpose -> image -> position cue -> instruction ->
 audio -> Level/prescription reminder -> RPE. No widget labels or keys
 changed — the E2E selector contract is untouched.
+
+Phase 7 (view conversion): chrome via utils.strings; RPE options
+localize per locale (raw == displayed; normalize_rpe_score is
+digit-based — translated options parse unchanged); the per-card
+Level · prescription reminder composes level_display (accepted
+descriptor gain). RPE_OPTIONS is retained as the EN contract constant.
+Widget keys unchanged.
 """
 from __future__ import annotations
 
@@ -38,6 +45,7 @@ from utils.exercise_logic import (
 )
 from utils.autoregulation_logic import effective_prescription
 from utils.assets import render_image, render_audio
+from utils.strings import tr, level_display
 from db import queries
 
 RPE_OPTIONS = [
@@ -53,6 +61,10 @@ def _level_int(level: str) -> int:
     return int(level.split()[-1])
 
 
+def _rpe_options() -> list[str]:
+    return [tr(f"training.rpe_{i}") for i in range(1, 6)]
+
+
 def render_training_session(user: dict) -> None:
     pos = get_session_position(user["email"])
     daily = select_daily_set(user["email"], pos["cycle"],
@@ -61,7 +73,7 @@ def render_training_session(user: dict) -> None:
     rx = effective_prescription(user["email"], pos["cycle"],
                                 pos["week"], lvl)
 
-    st.title("Stage 2 — Exercises")
+    st.title(tr("training.title"))
 
     # position-tagged keys prevent stale RPE leaking across days
     key_tag = f"{pos['cycle']}_{pos['week']}_{pos['day']}"
@@ -72,20 +84,22 @@ def render_training_session(user: dict) -> None:
             st.subheader(card["title"])
             st.write(card["purpose"])       # brief description before the visual
             render_image(card["image"], label=card["title"])
-            st.write(f"**Position:** {card['position_cue']}")
+            st.write(tr("training.position").format(
+                position_cue=card["position_cue"]))
             st.write(card["instructions"])  # approved copy; plain, not italic
             render_audio(card.get("audio"))  # change #12 — narration alongside
-            # Prescription reminder — execution info where the action is
-            # (string identical to the former page-top banner).
-            st.info(f"**Level** {user['level']} · {format_prescription(rx)}")
+            # Prescription reminder — execution info where the action is.
+            st.info(tr("training.level_info").format(
+                level=level_display(user["level"]),
+                prescription=format_prescription(rx)))
             st.selectbox(
-                f"How hard did that feel? — {card['title']}",  # distinct label per exercise
-                options=RPE_OPTIONS,  # raw == displayed
-                index=2,  # default Moderate
+                tr("training.rpe_prompt").format(title=card["title"]),
+                options=_rpe_options(),     # raw == displayed
+                index=2,                    # default Moderate
                 key=f"rpe_{key_tag}_{cid}",
             )
 
-    if st.button("Submit Workout", key="btn_submit_workout",
+    if st.button(tr("training.submit"), key="btn_submit_workout",
                  width="stretch", type="primary"):
         rpe_map = {cid: normalize_rpe_score(
                        st.session_state[f"rpe_{key_tag}_{cid}"])

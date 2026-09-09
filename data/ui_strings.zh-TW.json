@@ -1,0 +1,162 @@
+{
+  "app": {"page_title": "長者線上運動訓練系統"},
+  "auth": {
+    "title": "🏃 長者線上運動訓練系統",
+    "tab_returning": "既有使用者登入",
+    "tab_new": "新使用者註冊",
+    "email": "電子郵件",
+    "password": "密碼",
+    "remember_label": "在此裝置上保持登入狀態（30 天）",
+    "login_button": "登入",
+    "login_error": "電子郵件或密碼不正確。",
+    "terms_expander": "閱讀完整的參與條款、健康免責聲明與隱私告示",
+    "terms_download": "下載完整條款",
+    "email_req": "電子郵件 *",
+    "username_req": "使用者名稱 *",
+    "age_req": "年齡 *",
+    "sex_label": "性別（用於小腿圍及坐姿起立常模）",
+    "password_caption": "請設定至少 {min_length} 個字元的密碼。（參閱下方 {required_note}。）",
+    "password_req": "密碼 *",
+    "confirm_req": "確認密碼 *",
+    "register_button": "建立帳號",
+    "err_required": "必須填寫電子郵件與使用者名稱。",
+    "err_pw_length": "密碼長度至少要有 {min_length} 個字元。",
+    "err_pw_mismatch": "兩次輸入的密碼不相符。",
+    "err_consent": "請先確認健康免責聲明與隱私條款，方可進行註冊。",
+    "err_exists": "此電子郵件已經註冊，請直接登入。",
+    "sex_option_unspecified": "不願透露",
+    "sex_option_male": "男性",
+    "sex_option_female": "女性"
+  },
+  "hub": {
+    "title": "歡迎，{username} 👋",
+    "info": "等級：{level} · 循環 {cycle} · 第 {week} 週 · 第 {day} 天",
+    "rest_day": "今天是您的休息與回顧日。僅宜進行輕量活動。",
+    "start_review": "開始每週回顧",
+    "workout_day": "今日訓練：呼吸練習 + 3 組運動（約 15–30 分鐘）。",
+    "start_workout": "開始今日運動",
+    "bookmark_tip": "💡 保持登入小撇步：立即將此頁面加入書籤——在手機上可以使用「加入主畫面」。下次只要點擊書籤即可直達此頁，無需重新登入。",
+    "logout": "登出"
+  },
+  "breathing": {
+    "title": "階段 1 — 呼吸練習",
+    "no_session": "今日未安排呼吸練習。",
+    "cadence": "吸氣 {inhale_s} 秒 · 憋氣 {hold_s} 秒 · 呼氣 {exhale_s} 秒 · {cycles} 個循環",
+    "start_circle": "▶ 開始呼吸圓環 — {title}",
+    "stop_circle": "⏹ 停止呼吸圓環 — {title}",
+    "running_guidance": "跟著圓環節奏呼吸 — 完成 {cycles} 個循環後會自動停止。",
+    "start_guidance": "準備好之後，點擊「開始」— 圓環會配合您的呼吸移動，完成 {cycles} 個循環後會自動停止。",
+    "start_exercises": "開始運動訓練",
+    "illustration_caption": "圖解：{title}"
+  },
+  "training": {
+    "title": "階段 2 — 體能訓練",
+    "level_info": "等級：{level} · {prescription}",
+    "position": "姿勢提示：{position_cue}",
+    "rpe_prompt": "剛才的動作自覺有多辛苦？ — {title}",
+    "rpe_1": "😃 1 — 非常輕鬆",
+    "rpe_2": "🙂 2 — 輕鬆",
+    "rpe_3": "😐 3 — 適中",
+    "rpe_4": "😣 4 — 辛苦",
+    "rpe_5": "😫 5 — 非常辛苦",
+    "submit": "送出今日紀錄"
+  },
+  "rest": {
+    "title": "休息與每週回顧 — 第 {week} 週",
+    "light_movement": "僅宜進行輕量活動。請完成以下檢查以完成本週計畫。",
+    "metric_label": "本週平均運動強度（RPE）",
+    "induction": "適應期週次 — 數據將作為您的基準紀錄。第 1 週不會調整訓練量。",
+    "hard": "本週感覺較為辛苦 — 下週的訓練量將會調低。",
+    "easy": "本週感覺輕鬆 — 下週的訓練量將會稍微增加。",
+    "moderate": "本週感覺剛剛好 — 訓練量將保持不變。",
+    "next_prescription": "下週的運動處方：{prescription}",
+    "regression_warning": "⚠️ 您已連續兩週回報強度偏高。為了您的舒適與安全，您的等級將由 {current_level} 調整為 {new_level}。",
+    "regression_ack": "我明白我的等級將變更為 {n}。",
+    "hard_streak": "連續兩週感覺辛苦 — 您目前已處於最安全的等級（{n}）。系統將改為調低您的訓練量。",
+    "recall": "您記得本週學過多少個運動動作？",
+    "reflection": "您感覺身體狀況如何？（選填）",
+    "sts": "坐姿起立 — 15 秒內完成次數",
+    "sls_left": "單腳站立 — 左腳（秒）",
+    "sls_right": "單腳站立 — 右腳（秒）",
+    "submit": "完成每週回顧",
+    "ack_error": "請先勾選確認上方的等級變更，方可繼續。"
+  },
+  "summary": {
+    "title": "運動完成！🎉",
+    "completed": "已完成運動組數：{n}",
+    "avg_rpe": "平均自覺強度 (RPE)：{avg} / 5",
+    "return_hub": "返回每日主頁"
+  },
+  "program_complete": {
+    "title": "🎉 成功完成整個課程！",
+    "congrats": "{username}，您在 5 週內順利完成了 {n} 次訓練 — 非常棒的表現！",
+    "choose": "請選擇您希望如何繼續：",
+    "retake": "重新進行評估並重頭開始",
+    "restart": "以目前等級重新開始訓練"
+  },
+  "wizard": {
+    "title": "歡迎您！我們一起完成體能評估。",
+    "step1": "第 1 步（共 4 步）— 安全篩檢",
+    "step0_caption": "請勾選所有適用於您的項目。若無任何適用，請保持空白並按「繼續」。",
+    "continue": "繼續",
+    "step4": "第 4 步（共 4 步）— 您的運動偏好",
+    "preference_label": "您的運動偏好",
+    "preference_0": "椅子輔助",
+    "preference_1": "坐姿進行",
+    "preference_2": "扶物站立",
+    "preference_3": "獨立站立",
+    "preference_4": "動態站立",
+    "review": "核對與確認",
+    "red_flags_label": "安全警訊指標：{red_flags}",
+    "red_flags_none": "無",
+    "red_flag_warning": "系統偵測到安全警訊項目。為了您的安全，您的訓練等級已設定為 {n}。",
+    "metrics": "SARC-F 問卷：{sarc_f}/10 · 小腿圍：{calf} · 平衡力：{balance} · 坐姿起立：{chair_stand}",
+    "total": "總分：{total}/16（分數越低，身體功能越好）",
+    "preference_summary": "您的偏好：{preference}",
+    "assigned_level": "### 分派等級：{level}",
+    "confirm": "確認並開始訓練"
+  },
+  "sarc_f": {
+    "subheader": "SARC-F 肌少症風險評估問卷",
+    "caption": "請根據您目前的能力回答每個問題。"
+  },
+  "baseline": {
+    "subheader": "基準體能測量",
+    "caption": "請使用放在防滑地面上、穩固且無輪子的椅子。",
+    "label_calf": "請輸入您的小腿圍（公分）",
+    "label_sls_l": "請輸入單腳站立時間 — 左腳（秒）",
+    "label_sls_r": "請輸入單腳站立時間 — 右腳（秒）",
+    "label_chair": "請輸入 30 秒坐姿起立次數（次）",
+    "caption_calf": "小腿圍測量示範",
+    "caption_sls_l": "單腳站立 — 左腳示範",
+    "caption_sls_r": "單腳站立 — 右腳示範",
+    "caption_chair": "30 秒坐姿起立示範"
+  },
+  "prescription": {
+    "template_hold": "{sets} 組 · {reps_min}–{reps_max} 次（或維持 {hold} 秒）· 休息 {rest} 秒",
+    "template_no_hold": "{sets} 組 · {reps_min}–{reps_max} 次 · 休息 {rest} 秒"
+  },
+  "assets": {
+    "audio_hint": "🔊 點擊播放按鈕以收聽語音指引",
+    "image_fallback": "[圖片：{label}]"
+  },
+  "contact": {
+    "lead": "需要協助？歡迎發送電子郵件聯絡我們：",
+    "anchor_aria": "發送電子郵件給訓練團隊",
+    "img_alt": "支援團隊的電子郵件地址",
+    "runtime_aria_prefix": "發送電子郵件聯絡我們："
+  },
+  "picker": {
+    "label": "Select your preferred language / 請選擇你的語言",
+    "display_en": "English",
+    "display_zh_hk": "繁體中文（香港）",
+    "display_zh_tw": "繁體中文（台灣）"
+  },
+  "levels": {
+    "Level 0": "等級 0 (椅子輔助)",
+    "Level 1": "等級 1 (坐姿進行)",
+    "Level 2": "等級 2 (扶物站立)",
+    "Level 3": "等級 3 (獨立站立)",
+    "Level 4": "等級 4 (動態站立)"
+  }
+}

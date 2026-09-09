@@ -20,6 +20,17 @@ Vehicle note (final record): the POSITIONAL st.iframe argument is the
 validated vehicle for raw HTML on pinned Streamlit 1.62.0. "srcdoc=" is
 not a parameter of st.iframe on 1.62 — never used. st.html is not
 usable on 1.62; the deprecated st.components.v1.html is not shipped.
+
+Phase 7 (localization skeleton wiring): boot_resolve_locale() runs
+after session restore and before routing — resolves the active UI
+locale (?lang= > in-session choice > users.locale > "en"; the default
+is never written to the session).
+
+Phase 7 (view conversion): the browser-tab title localizes from ?lang=
+at FIRST LOAD ONLY (set_page_config applies once per page load — a
+mid-session picker switch or profile locale does not retitle until the
+next reload; documented trade-off). All routed views render via
+utils.strings.
 """
 from __future__ import annotations
 import warnings
@@ -42,8 +53,15 @@ from components.views.program_complete import render_program_complete
 from utils.contact import render_support_footer
 from utils.auth import try_restore_session
 from utils.dev_gate import dev_tools_enabled
+from utils.locale import boot_resolve_locale, LANG_PARAM
+from utils.strings import tr_locale
 
-st.set_page_config(page_title="Elderly Training", page_icon="🏃",
+# Tab title: resolved from ?lang= at first load (see module docstring).
+_title_locale = st.query_params.get(LANG_PARAM)
+if _title_locale not in ("zh-HK", "zh-TW"):
+    _title_locale = "en"
+st.set_page_config(page_title=tr_locale(_title_locale, "app.page_title"),
+                   page_icon="🏃",
                    layout="centered", initial_sidebar_state="collapsed")
 
 # Inject WCAG baseline CSS (absolute path — CWD-independent)
@@ -147,6 +165,11 @@ def main() -> None:
         st.query_params.get("debug", "false").lower() == "true")
     if not st.session_state["authenticated"]:
         try_restore_session()  # Step 2b — ?t= token survives reload
+    # Phase 7: resolve the active UI locale every pass — ?lang= >
+    # in-session choice > users.locale > "en". Runs after session restore
+    # (profile available) and before any render, including the
+    # unauthenticated path.
+    boot_resolve_locale(st.session_state.get("user"))
     _route()
     render_support_footer()  # change #11-B — every page, one central call
     # Emitted last, on every completed render (change #9).

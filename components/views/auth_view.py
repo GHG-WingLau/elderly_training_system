@@ -16,6 +16,28 @@ REMEMBER_LABEL (default ON — team decision; flip value=True to change)
 creates a 30-day session token and places it in st.query_params["t"];
 the URL then carries the token (bookmark = stay logged in); app.py's
 try_restore_session() restores at boot. Unchecked = plain session.
+
+Phase 7 localization (skeleton): language picker call added below the
+title — INERT until a second locale ships (utils.locale gates on
+SUPPORTED_LOCALES). View strings remain EN until the code-side
+UI-strings source is signed off (§5 census).
+
+Phase 7 decision (a): registration records the session locale
+(users.locale) alongside the consent evidence columns — pinned by
+test_registration_captures_session_locale.
+
+Phase 7 (loader step): the consent gate renders the ACTIVE LOCALE's
+document — per-locale caches; EN keeps the base filename; locales use
+consent.{locale}.json. A zh-HK registration therefore records
+consent_version "v1.1-zh-HK" (§7.8) once zh-HK activates. The
+checkbox label is data-driven (the helpers_e2e precedent survives
+localization for free).
+
+Phase 7 (view conversion): all chrome renders via utils.strings (tr);
+SEX option labels localize, their VALUES (U/M/F) never do;
+REMEMBER_LABEL and SEX_OPTIONS are retained as the EN contract
+constants — the rendered labels come from ui_strings. EN rendering is
+byte-identical.
 """
 from __future__ import annotations
 
@@ -28,40 +50,52 @@ import streamlit as st
 
 from db import queries
 from utils.auth import MIN_PASSWORD_LENGTH, TOKEN_PARAM, hash_password, verify_password
+from utils.locale import get_locale, render_language_picker, safe_locale
+from utils.strings import tr
 
 SEX_OPTIONS = {"Prefer not to say": "U", "Male": "M", "Female": "F"}
 
 REMEMBER_LABEL = "Keep me logged in on this device (30 days)"
 
-_CONSENT_PATH = (Path(__file__).resolve().parent.parent.parent
-                 / "data" / "consent.json")
-_consent_cache: Optional[dict] = None
+_CONSENT_DIR = (Path(__file__).resolve().parent.parent.parent / "data")
+_consent_caches: dict[str, dict] = {}
 
 
 def _load_consent() -> dict:
-    global _consent_cache
-    if _consent_cache is None:
-        with open(_CONSENT_PATH) as f:
-            _consent_cache = json.load(f)
-    return _consent_cache
+    locale = safe_locale()
+    if locale not in _consent_caches:
+        name = "consent.json" if locale == "en" else f"consent.{locale}.json"
+        with open(_CONSENT_DIR / name) as f:
+            _consent_caches[locale] = json.load(f)
+    return _consent_caches[locale]
+
+
+def _sex_options() -> dict:
+    """Locale display labels -> stored values (U/M/F never localize)."""
+    return {tr("auth.sex_option_unspecified"): "U",
+            tr("auth.sex_option_male"): "M",
+            tr("auth.sex_option_female"): "F"}
 
 
 def render_auth() -> None:
-    st.title("🏃 Elderly Online Training System")
+    st.title(tr("auth.title"))
+    render_language_picker()  # 7.4 — inert while only "en" ships
     consent = _load_consent()
     micro = consent["micro"]
-    tab_return, tab_new = st.tabs(["Returning User", "New User"])
+    tab_return, tab_new = st.tabs([tr("auth.tab_returning"),
+                                   tr("auth.tab_new")])
 
     with tab_return:
         login_user = None
         remember = True
         with st.form("login"):
-            email = st.text_input("Email", key="login_email")
-            password = st.text_input("Password", key="login_password",
+            email = st.text_input(tr("auth.email"), key="login_email")
+            password = st.text_input(tr("auth.password"), key="login_password",
                                      type="password")
-            remember = st.checkbox(REMEMBER_LABEL, value=True,
+            remember = st.checkbox(tr("auth.remember_label"), value=True,
                                    key="login_remember")
-            submitted = st.form_submit_button("Log In", width="stretch")
+            submitted = st.form_submit_button(tr("auth.login_button"),
+                                              width="stretch")
             if submitted:
                 user = (queries.get_user(email.strip())
                         if email.strip() else None)
@@ -70,7 +104,7 @@ def render_auth() -> None:
                                             user["password_hash"])):
                     login_user = user
                 else:
-                    st.error("Email or password is incorrect.")
+                    st.error(tr("auth.login_error"))
         if login_user is not None:
             if remember:
                 token = queries.create_session_token(login_user["email"])
@@ -87,59 +121,57 @@ def render_auth() -> None:
         st.write(micro["lead"])
         for point in micro["points"]:
             st.write(f"• {point}")
-        with st.expander("Read the full Terms of Participation, Health "
-                         "Waiver, and Privacy Notice"):
+        with st.expander(tr("auth.terms_expander")):
             st.write(consent["full_text"])
             st.download_button(
-                "Download the full terms",
+                tr("auth.terms_download"),
                 data=consent["full_text"],
                 file_name=f"terms_{consent['version']}.txt",
                 mime="text/plain", width="stretch")
         with st.form("register"):
-            email = st.text_input("Email *", key="reg_email")
-            username = st.text_input("Username *", key="reg_user")
-            age = st.number_input("Age *", min_value=18, max_value=110,
-                                  value=65, step=1, key="reg_age")
+            email = st.text_input(tr("auth.email_req"), key="reg_email")
+            username = st.text_input(tr("auth.username_req"), key="reg_user")
+            age = st.number_input(tr("auth.age_req"), min_value=18,
+                                  max_value=110, value=65, step=1, key="reg_age")
             sex_label = st.selectbox(
-                "Sex (used for calf & chair-stand norms)",
-                list(SEX_OPTIONS), key="reg_sex")
-            st.caption(f"Choose a password of at least "
-                       f"{MIN_PASSWORD_LENGTH} characters. "
-                       f"({micro['required_note']} below.)")
-            password = st.text_input("Password *", key="reg_password",
+                tr("auth.sex_label"),
+                list(_sex_options()), key="reg_sex")
+            st.caption(tr("auth.password_caption").format(
+                min_length=MIN_PASSWORD_LENGTH,
+                required_note=micro["required_note"]))
+            password = st.text_input(tr("auth.password_req"), key="reg_password",
                                      type="password")
-            confirm = st.text_input("Confirm password *",
+            confirm = st.text_input(tr("auth.confirm_req"),
                                     key="reg_password2", type="password")
             consent_ok = st.checkbox(micro["checkbox_label"],
                                      key="reg_consent")
-            submitted = st.form_submit_button("Create Account",
+            submitted = st.form_submit_button(tr("auth.register_button"),
                                               width="stretch")
             if submitted:
                 error = None
                 if not email.strip() or not username.strip():
-                    error = "Email and username are required."
+                    error = tr("auth.err_required")
                 elif len(password) < MIN_PASSWORD_LENGTH:
-                    error = (f"Password must be at least "
-                             f"{MIN_PASSWORD_LENGTH} characters.")
+                    error = tr("auth.err_pw_length").format(
+                        min_length=MIN_PASSWORD_LENGTH)
                 elif password != confirm:
-                    error = "Passwords do not match."
+                    error = tr("auth.err_pw_mismatch")
                 elif not consent_ok:
-                    error = ("Please confirm the Health Waiver and "
-                             "Privacy Terms to register.")
+                    error = tr("auth.err_consent")
                 elif queries.get_user(email.strip()) is not None:
-                    error = ("An account with this email already exists. "
-                             "Please log in instead.")
+                    error = tr("auth.err_exists")
                 if error:
                     st.error(error)
                 else:
                     do_register = True
         if do_register:
-            sex = SEX_OPTIONS[sex_label]
+            sex = _sex_options()[sex_label]
             queries.create_user(
                 email.strip(), username.strip(), int(age), sex,
                 password_hash=hash_password(password),
                 consent_version=consent["version"],
-                consent_accepted_at=datetime.now(timezone.utc))
+                consent_accepted_at=datetime.now(timezone.utc),
+                locale=get_locale())  # Phase 7 decision (a)
             user = queries.get_user(email.strip())
             st.session_state.update(
                 authenticated=True, user_email=user["email"],

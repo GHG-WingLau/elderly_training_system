@@ -1,0 +1,213 @@
+{
+  "C01": {
+    "chars": 76,
+    "mp3_sha256": "b3f1560229df4367688858ab334dbe1326a99571a030aec967953d1a9ba2a0a9",
+    "rate": "-15%",
+    "text_sha256": "ee57a0c4cb65cc78134ffcc6c51a4349df2758df6c7971106a5ad084274063ae",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "C02": {
+    "chars": 52,
+    "mp3_sha256": "86f9e03b3d122037428f5ad9779e1ebad70a915b606b1390e14d1c713040f04a",
+    "rate": "-15%",
+    "text_sha256": "a305947098f3ecdc0b1ff86cbaffffe73d04a9f22ce215b5e6077567661bdf03",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "C03": {
+    "chars": 57,
+    "mp3_sha256": "8be50dabe8cb94c4a21e22972be2af4ac2fac4782bcdbea4f6c2fff48eab0728",
+    "rate": "-15%",
+    "text_sha256": "01da8ee76c36e22e12bde0208b5498357d9adcb69cdf9f7bd69d43487cc580c1",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "C04": {
+    "chars": 76,
+    "mp3_sha256": "bb2be83cf28a7cc511532deb7fd35aa8f8d7402542ead3747e2206c061dc26a5",
+    "rate": "-15%",
+    "text_sha256": "5bf4fb596127ad207cdc6cc9f7eb2f21be921ec60f829b74253f2ec422d40acc",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "CM01": {
+    "chars": 54,
+    "mp3_sha256": "f3665a64ab15dbca17ebfcdb00c0bd736069af964c231d85101bfee5122ce10b",
+    "rate": "-15%",
+    "text_sha256": "3726168665ff70a3577888ccff31623314f38d29cac82a80a1391e7800bc1ab2",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "CM02": {
+    "chars": 64,
+    "mp3_sha256": "0064f7fc40779a45b53946ec918e14eea592dca3537da206243ef3141d43a31b",
+    "rate": "-15%",
+    "text_sha256": "2811610fe561c03dbfde3be13893abd5827abfc58a29f91cbc876ccb547e821d",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "CM03": {
+    "chars": 55,
+    "mp3_sha256": "a345c7701d3cfb39210a52acc37fa4e8ae23a62a2cd9b7909d59286d849406df",
+    "rate": "-15%",
+    "text_sha256": "110c9671019367c1f83cf9738ca3ded6790ac5aa0521e2227e241bdb843582ac",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "CM04": {
+    "chars": 67,
+    "mp3_sha256": "3cfc7a8bd32d1edf7bb2281166cd9a04054d215b57911e91c3870aba07b1722c",
+    "rate": "-15%",
+    "text_sha256": "0b8c1b302200e4394b1403d00fe39e0046ffff6fb1fa6ec8ec0123c28f7d3c8b",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "DB01": {
+    "chars": 101,
+    "mp3_sha256": "cc46e164e98c0fef7ff53234c48a7524092fd766f1e62bec2384dc737da6aa28",
+    "rate": "-15%",
+    "text_sha256": "54d1f6b69db5608e1368632f3be5dafb118b5e08451e78aef27ffb6038a17a24",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "DB02": {
+    "chars": 96,
+    "mp3_sha256": "1a029e533418053a276b9f634d8e38fc87b18c8d49288c67045d2090d23fd256",
+    "rate": "-15%",
+    "text_sha256": "922b174393a6ed44e09502680c43bc77b7b3e66a31099a8ff7557f1559ffd10b",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "DB03": {
+    "chars": 73,
+    "mp3_sha256": "002e5b3deb15dff24cd27324ddad1833c6445c4cbabd96c5e888cf8b455f3226",
+    "rate": "-15%",
+    "text_sha256": "d5c67695e796c03e9f713c599fa7afa53959c1cca06392bafbb0d6ec0c9ef8f0",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "DB04": {
+    "chars": 70,
+    "mp3_sha256": "44a04d57eafaf35f266266ba2154a6ff67626314571d0e5ea31105be0ef0d666",
+    "rate": "-15%",
+    "text_sha256": "93e50d9a339ead98cb981c6c932cf20cac8015066feae2ccdfb12ceb13ede97d",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "DB05": {
+    "chars": 79,
+    "mp3_sha256": "f01e556b05db467d6de2df73dad40c988ea337e8bebf00be997f100fce165cc2",
+    "rate": "-15%",
+    "text_sha256": "ff71c9a8d9dc8256404cc6dd983b3acc9e27b73343d64f7657971c1bda1e0ea0",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "G01": {
+    "chars": 60,
+    "mp3_sha256": "8afdd670f71af118ea5b16ecf3a5f9e3d7d57d3bce2bc045881aaf06d3e47fb9",
+    "rate": "-15%",
+    "text_sha256": "34629d90d6bdb3118d3ccd45db6f96b11767cd8e2ee7e310ed6d14f2c704fcc6",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "G02": {
+    "chars": 55,
+    "mp3_sha256": "b0f2da89c8d2dea4ca2e0de6e236878df1dfbaa9bead2d7b0f10de3d062cc116",
+    "rate": "-15%",
+    "text_sha256": "c44445a826490df89099fcca6d37126dc3c8dd4fdb9888a8880613b203bb0048",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "G03": {
+    "chars": 59,
+    "mp3_sha256": "3fdac3aefd09544b2bc8e3f16715e6fce94495a3db9759796a86326d390fb276",
+    "rate": "-15%",
+    "text_sha256": "a3309f324d72e7bb3577b1d2ec38f09e3b19646212d7392b3451743b06507f9f",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "G04": {
+    "chars": 64,
+    "mp3_sha256": "a57c7493280607aa6ea7d8592c26b6ba0a0b80302cc6749785fbd21246bb3fe8",
+    "rate": "-15%",
+    "text_sha256": "a27ae8c01d622ff75dd9c5254ccc9f5fd6a435f40dc66768bb86a51560baa9f1",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "HF01": {
+    "chars": 63,
+    "mp3_sha256": "2d2c9aae5690a63f0ff23bf7f5fe8fec19cb4e18fbaf5f744a16af2c544afda3",
+    "rate": "-15%",
+    "text_sha256": "31c0c46b2608adae9a46de7371307c4608d09e4499c791746cad1708431cd943",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "HF02": {
+    "chars": 59,
+    "mp3_sha256": "8cac201e54180f503e712b47df1230fbab7709d49d7305c5ba2a876120660283",
+    "rate": "-15%",
+    "text_sha256": "92f6cf60a8d0ddd9d3b66803fb90caa91778c5a53912add329a87608128f15d1",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "HF03": {
+    "chars": 51,
+    "mp3_sha256": "8dee5f5260803cea055d575769bf7358d0e865fab53edc51cf80a9c79a1614b7",
+    "rate": "-15%",
+    "text_sha256": "a8c829f6481ce5481544e33064ecd7dad0980bf691828afc0b0fa79807264c6e",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "HF04": {
+    "chars": 72,
+    "mp3_sha256": "2a72cef53660d9d4a4082b1b95f0178301fde389e228ceee95048f08221c28dc",
+    "rate": "-15%",
+    "text_sha256": "596153b9553fdb1711ef002826d39187b4d77bf56d9bc049b3564a3dde36250c",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "PC01": {
+    "chars": 68,
+    "mp3_sha256": "4c5d45d446c7dc0526b54efc8b54edc7952aa3b73911b03ac63d89f8083c09f3",
+    "rate": "-15%",
+    "text_sha256": "50ee5ad513d13c13ee2f597ce50a48e7b6bc4514d437df0b4b59aa9288e8040f",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "PC02": {
+    "chars": 71,
+    "mp3_sha256": "6b2bfa0cc595f67efa508d8bf9ab40571cd523bf2c946f10c273e628599d505f",
+    "rate": "-15%",
+    "text_sha256": "07c50217b214e04ad9817f67d4d0d1b615670ee2b7f6c69295b3ba15ff7c6559",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "PC03": {
+    "chars": 70,
+    "mp3_sha256": "72c7c37d271eb5ab26e5ba850f23b3fb2a56b5d04700dced33c25a89fee858cc",
+    "rate": "-15%",
+    "text_sha256": "1fec18403da51b15d139a080237f382cef79b87a94c9773bbe5ce75844eee5b5",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "PC04": {
+    "chars": 59,
+    "mp3_sha256": "d62c096b472ce341deec3857131211833e2338a722350009670ffc0d23d0a545",
+    "rate": "-15%",
+    "text_sha256": "ff858cdc9e7d8d6f08550d421480a2e1712e74bd73d70543a454bc6c70568e8d",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "SP01": {
+    "chars": 61,
+    "mp3_sha256": "b8331a78a9e1af1ee7ade9b192a8ca16272e3a357f6daf5c9403cdf89cbbf5e9",
+    "rate": "-15%",
+    "text_sha256": "a0cd8f522ca0af628519d1ef2d3599e65dc190d0f8e519580f749cafcfff3edb",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "SP02": {
+    "chars": 67,
+    "mp3_sha256": "b8119db9effa948a310174561c5eb5189539786db161f93d434b657ed74c9839",
+    "rate": "-15%",
+    "text_sha256": "b6ffc478db9a70930037bcaee4b558cb596cb312ac13a80e20dd542fe38b3071",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "SP03": {
+    "chars": 66,
+    "mp3_sha256": "2325b8a8004e0a08d31fbba23bf72482e21d292751330d7fdbbb8495461e0ea4",
+    "rate": "-15%",
+    "text_sha256": "a39e37c4f9b689d7a86c2e319c707dcf0a38f11411c33dbd9a9e8b31f03a6aa0",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "SP04": {
+    "chars": 60,
+    "mp3_sha256": "aed66712ad8bfc0f3de2e7a92511373fc31e55d7a626341156065c1fc95806d8",
+    "rate": "-15%",
+    "text_sha256": "0d69350454161be7b307cc45d7ce0a623915eb1f8e691bc9d5f12ee061ae0e6e",
+    "voice": "zh-HK-HiuMaanNeural"
+  },
+  "_meta": {
+    "engine": "edge-tts",
+    "generated_at": "2026-09-09T04:39:53.996649+00:00",
+    "locale": "zh-HK",
+    "note": "text_sha256 binds each mp3 to the exact instruction string it was generated from; a mismatch with the locale's data/*.json means stale audio — regenerate.",
+    "rate": "-15%",
+    "voice": "zh-HK-HiuMaanNeural"
+  }
+}

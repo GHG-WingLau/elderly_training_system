@@ -18,6 +18,16 @@ Step 2a: create_user carries password_hash/consent columns (ON CONFLICT
 update set deliberately excludes them — auth_view's duplicate-email gate
 guards re-registration); session-token functions (30-day default,
 opportunistic purge).
+
+Phase 7 (localization, 7.4.3): set_user_locale persists the UI-locale
+preference to users.locale (nullable; NULL = resolution-chain default).
+Single-statement write like set_user_level; reads flow through get_user
+(SELECT *), which includes the column.
+
+Phase 7 decision (a): create_user also records the registration-session
+locale (auth_view passes utils.locale.get_locale()). The ON CONFLICT
+update set excludes locale too — the duplicate-email gate guards the
+path; the value is a preference, never a registration fact.
 """
 from __future__ import annotations
 
@@ -35,17 +45,18 @@ def _row_to_dict(row: Optional[dict]) -> Optional[dict]:
 def create_user(email: str, username: str, age: int, sex: str,
                 password_hash: Optional[str] = None,
                 consent_version: Optional[str] = None,
-                consent_accepted_at: Optional[datetime] = None) -> None:
+                consent_accepted_at: Optional[datetime] = None,
+                locale: Optional[str] = None) -> None:
     conn = get_connection()
     conn.execute(
         """INSERT INTO users (email, username, age, sex, password_hash,
-        consent_version, consent_accepted_at)
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        consent_version, consent_accepted_at, locale)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         ON CONFLICT(email) DO UPDATE SET
         username=excluded.username, age=excluded.age,
         sex=excluded.sex""",
         (email, username, age, sex, password_hash, consent_version,
-         consent_accepted_at),
+         consent_accepted_at, locale),
     )
     conn.commit()
 
@@ -96,9 +107,19 @@ def advance_cycle(email: str) -> int:
 def set_user_level(email: str, level: str) -> None:
     """Light level update for mid-cycle regression (scores untouched)."""
     conn = get_connection()
-    conn.execute(
-        "UPDATE users SET level = %s WHERE email = %s", (level, email)
-    )
+    conn.execute("UPDATE users SET level = %s WHERE email = %s", (level, email))
+    conn.commit()
+
+
+def set_user_locale(email: str, locale: str) -> None:
+    """Phase 7 (7.4.3): persist the user's UI-locale preference.
+
+    Single-statement value update (no row creation); validated upstream
+    (utils.locale.set_locale) against SUPPORTED_LOCALES.
+    """
+    conn = get_connection()
+    conn.execute("UPDATE users SET locale = %s WHERE email = %s",
+                 (locale, email))
     conn.commit()
 
 

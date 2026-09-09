@@ -25,13 +25,25 @@ the assembled address exists only in the runtime DOM (accepted residual
 risk: script-executing harvesters). The address image is a base64 SVG
 data-URI (WCAG 1.4.5 deviation recorded with rationale); runtime
 aria-label carries the assembled address for screen readers.
+
+Phase 7 (view conversion): the footer's user-facing strings (lead line,
+anchor aria-label/title, img alt, runtime aria prefix) render from
+utils.strings — the builder resolves the ACTIVE LOCALE at call time
+(bare test contexts fall back to EN via utils.locale.safe_locale,
+preserving the pure-builder tests' EN expectations). SUPPORT_EMAIL
+stays Latin-script in every locale; SUPPORT_SUBJECT is NOT localized
+(team decision 5). The zh lead line rides the system font stack —
+CJK fallback verified in the typography QA pass.
 """
 from __future__ import annotations
 
 import base64
+import json
 from urllib.parse import quote
 
 import streamlit as st
+
+from utils.strings import tr
 
 SUPPORT_EMAIL = "Sheepandfish.fit@gmail.com"
 SUPPORT_SUBJECT = "Enquiry and Comment"
@@ -54,7 +66,14 @@ def _address_image_data_uri(address: str) -> str:
 
 
 def build_support_fragment() -> str:
-    """Pure builder for the st.iframe footer fragment (no Streamlit)."""
+    """Build the st.iframe footer fragment for the ACTIVE locale."""
+    lead = tr("contact.lead")
+    aria = tr("contact.anchor_aria")
+    alt = tr("contact.img_alt")
+    # json.dumps -> a safely JS-quoted string (locale text may contain
+    # fullwidth punctuation; no ASCII-quote risk exists, but this is the
+    # robust form).
+    runtime_prefix = json.dumps(tr("contact.runtime_aria_prefix"))
     local, _, domain = SUPPORT_EMAIL.partition("@")
     # Dots re-joined at runtime — neither the local part nor the domain
     # appears contiguously in the fragment source.
@@ -84,10 +103,10 @@ def build_support_fragment() -> str:
   a.mail img {{ display: block; width: 100%; max-width: 336px; height: auto; }}
 </style>
 <div class="footer">
-  Need help? Email us at<br>
-  <a class="mail" href="#" aria-label="Email the training team"
-     title="Email the training team">
-    <img alt="Email address of the support team"
+  {lead}<br>
+  <a class="mail" href="#" aria-label="{aria}"
+     title="{aria}">
+    <img alt="{alt}"
          src="{_address_image_data_uri(SUPPORT_EMAIL)}">
   </a>
 </div>
@@ -97,7 +116,7 @@ def build_support_fragment() -> str:
   var domain = {d_js};     // parts joined at runtime
   var addr = user + "@" + domain;
   var a = document.querySelector("a.mail");
-  a.setAttribute("aria-label", "Email us at " + addr);
+  a.setAttribute("aria-label", {runtime_prefix} + addr);
   /* Self-navigation only: the sandbox permits a frame to navigate
      ITSELF; top-window navigation is blocked (the sandbox has no
      allow-top-navigation flag on 1.62). A real anchor click navigates

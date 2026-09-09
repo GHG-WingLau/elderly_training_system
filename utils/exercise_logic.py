@@ -16,6 +16,24 @@ satisfying form):
     even days card B) -> no exercise on consecutive days.
   - All RNG seeded by sha256(email|cycle|week|salt) -> deterministic across
     Streamlit reruns. Weekly pool persisted to weekly_plan as primary safety.
+
+Phase 7 (localization): locale-aware card loading — per-locale caches; the
+EN file keeps the base name; locales use exercise_cards.{locale}.json. The
+card-key validation loop runs per locale on first load (locale files are
+held to the same contract as EN, including "purpose"). Curriculum
+determinism is unaffected: card_ids, categories, and base_levels are
+never-localize fields pinned equal to EN by tests/test_locale_data.py.
+Prescriptions stay locale-independent (numeric-only).
+
+format_prescription (Phase 7 v3): TWO whole per-locale templates instead
+of the v2 template+clause split — the split composed one space MORE than
+the signed zh string in the hold case (caught by
+test_format_prescription_localizes). The zh hold template is the signed
+string byte-for-byte; the no-hold template is the mechanical derivation.
+The code passes bare numbers; units live in the templates (EN
+"rest {rest}s", zh 「休息 {rest} 秒」); the hold template is chosen only
+when the prescription carries hold_s (Level 0 only). EN output is
+byte-identical to the pre-localization composition.
 """
 from __future__ import annotations
 import hashlib
@@ -25,11 +43,13 @@ from pathlib import Path
 from typing import Optional
 
 from db import queries
+from utils.locale import safe_locale
+from utils.strings import tr
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-_cards_cache: Optional[list] = None
+_cards_caches: dict[str, list] = {}
+_cards_by_cat_caches: dict[str, dict] = {}
 _prescriptions_cache: Optional[dict] = None
-_cards_by_cat_cache: Optional[dict] = None
 
 CATEGORY_INTRO = {
     0: {"C", "PC", "G"},
@@ -46,17 +66,25 @@ def _seed(email: str, cycle: int, week: int, salt: str = "") -> int:
         f"{email}|{cycle}|{week}|{salt}".encode()).hexdigest(), 16) % (2**32)
 
 
+def _filename(locale: str) -> str:
+    return ("exercise_cards.json" if locale == "en"
+            else f"exercise_cards.{locale}.json")
+
+
 def _load_cards() -> list[dict]:
-    global _cards_cache
-    if _cards_cache is None:
-        with open(DATA_DIR / "exercise_cards.json") as f:
-            _cards_cache = json.load(f)
-        for c in _cards_cache:
+    locale = safe_locale()
+    if locale not in _cards_caches:
+        with open(DATA_DIR / _filename(locale), encoding="utf-8") as f:
+            cards = json.load(f)
+        for c in cards:
             for k in ("card_id", "title", "category", "base_level", "image",
-                      "isometric", "instructions", "position_cues"):
+                      "isometric", "instructions", "purpose",
+                      "position_cues"):
                 if k not in c:
-                    raise ValueError(f"exercise card missing '{k}': {c.get('card_id')}")
-    return _cards_cache
+                    raise ValueError(
+                        f"exercise card missing '{k}': {c.get('card_id')}")
+        _cards_caches[locale] = cards
+    return _cards_caches[locale]
 
 
 def _load_prescriptions() -> dict:
@@ -68,15 +96,15 @@ def _load_prescriptions() -> dict:
 
 
 def _cards_by_category() -> dict[str, list[str]]:
-    global _cards_by_cat_cache
-    if _cards_by_cat_cache is None:
+    locale = safe_locale()
+    if locale not in _cards_by_cat_caches:
         out: dict[str, list[str]] = {}
         for c in _load_cards():
             out.setdefault(c["category"], []).append(c["card_id"])
         for cat in out:
             out[cat].sort()
-        _cards_by_cat_cache = out
-    return _cards_by_cat_cache
+        _cards_by_cat_caches[locale] = out
+    return _cards_by_cat_caches[locale]
 
 
 def _level_int(level) -> int:
@@ -103,6 +131,24 @@ def apply_position_cue(card: dict, level) -> dict:
 
 def get_prescription(level) -> dict:
     return _load_prescriptions()[str(_level_int(level))]
+
+
+def format_prescription(rx: dict) -> str:
+    """Build the display string from a numeric prescription dict.
+
+    Phase 7 v3: two whole per-locale templates (see module docstring).
+    Bare numbers in; units per locale; hold template only when the
+    prescription carries hold_s (Level 0 only).
+    """
+    rest = (f"{rx['rest_s_min']}" if rx["rest_s_min"] == rx["rest_s_max"]
+            else f"{rx['rest_s_min']}–{rx['rest_s_max']}")
+    if rx.get("hold_s"):
+        return tr("prescription.template_hold").format(
+            sets=rx["sets"], reps_min=rx["reps_min"],
+            reps_max=rx["reps_max"], hold=rx["hold_s"], rest=rest)
+    return tr("prescription.template_no_hold").format(
+        sets=rx["sets"], reps_min=rx["reps_min"],
+        reps_max=rx["reps_max"], rest=rest)
 
 
 def _pick_categories(week: int, rng: random.Random) -> list[str]:
@@ -158,18 +204,8 @@ def select_daily_set(email: str, cycle: int, week: int, day: int) -> list[str]:
     rng = random.Random(_seed(email, cycle, week, salt="daily"))
     cat_order: dict[str, list[str]] = {}
     for cat in sorted(by_cat):
-        c = list(by_cat[cat]); rng.shuffle(c)
+        c = list(by_cat[cat])
+        rng.shuffle(c)
         cat_order[cat] = c
     slot = 0 if (day - 1) % 2 == 0 else 1   # odd days (1,3,5) -> index 0
     return [cat_order[cat][slot] for cat in sorted(cat_order)]
-
-def format_prescription(rx: dict) -> str:
-    """Build the display string from a numeric prescription dict."""
-    reps = f"{rx['reps_min']}–{rx['reps_max']} reps"
-    if rx.get("hold_s"):
-        reps += f" (or {rx['hold_s']}s hold)"
-    if rx["rest_s_min"] == rx["rest_s_max"]:
-        rest = f"{rx['rest_s_min']}s"
-    else:
-        rest = f"{rx['rest_s_min']}–{rx['rest_s_max']}s"
-    return f"{rx['sets']} sets · {reps} · rest {rest}"

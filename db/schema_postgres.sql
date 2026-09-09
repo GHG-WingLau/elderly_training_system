@@ -6,6 +6,12 @@
 -- password_hash / consent_* / sessions are the FINAL schema shape,
 -- ACTIVATED by the Step-2 auth hardening — nullable and inert until
 -- then (authored now to avoid a second migration on a not-yet-deployed DB).
+--
+-- Phase 7 (localization, 7.4): users.locale added — the first post-
+-- "final-shape" schema amendment. Nullable, no backfill; NULL = fall
+-- through the locale resolution chain. Fresh DBs receive the column from
+-- CREATE TABLE below; existing DBs (local Docker, live Neon MAIN) receive
+-- it from the idempotent ALTER — no manual migration, lands at next boot.
 
 CREATE TABLE IF NOT EXISTS users (
   email TEXT PRIMARY KEY,
@@ -22,8 +28,11 @@ CREATE TABLE IF NOT EXISTS users (
   current_cycle INTEGER NOT NULL DEFAULT 1,
   password_hash TEXT,
   consent_version TEXT,
-  consent_accepted_at TIMESTAMPTZ
+  consent_accepted_at TIMESTAMPTZ,
+  locale TEXT
 );
+
+ALTER TABLE users ADD COLUMN IF NOT EXISTS locale TEXT;
 
 CREATE TABLE IF NOT EXISTS training_progress (
   id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

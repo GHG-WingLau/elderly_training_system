@@ -1,4 +1,10 @@
-"""Phase 4 — DAY_7_REST view: recovery checks, reflection, auto-regulation."""
+"""Phase 4 — DAY_7_REST view: recovery checks, reflection, auto-regulation.
+
+Phase 7 (view conversion): chrome via utils.strings; level-bearing lines
+(regression warning, acknowledgment, hard-streak) compose level_display
+names — the accepted descriptor gains materialize for EN here. Widget
+keys unchanged.
+"""
 from __future__ import annotations
 import streamlit as st
 
@@ -7,6 +13,7 @@ from utils.session_logic import get_session_position
 from utils.autoregulation_logic import day7_plan
 from utils.breathing_logic import get_safety_text
 from utils.exercise_logic import format_prescription
+from utils.strings import tr, level_display
 
 
 def render_rest_view(user: dict) -> None:
@@ -19,55 +26,51 @@ def render_rest_view(user: dict) -> None:
     plan = day7_plan(user["email"], cycle, week, user["level"])
     safety = get_safety_text()
 
-    st.title(f"Rest & Review — Week {week}")
+    st.title(tr("rest.title").format(week=week))
     st.info(f"🪑 {safety['chair_standard']}")
-    st.write("Light movement only. Complete the checks below to finish your week.")
+    st.write(tr("rest.light_movement"))
 
     if plan["avg_rpe"] is not None:
-        st.metric("Average effort this week (RPE)", f"{plan['avg_rpe']:.1f} / 5")
+        st.metric(tr("rest.metric_label"), f"{plan['avg_rpe']:.1f} / 5")
     if week == 0:
-        st.caption("Induction week — checks are recorded as your baseline. "
-                   "No adjustment is applied to Week 1.")
+        st.caption(tr("rest.induction"))
     elif plan["classification"] == "high":
-        st.warning("This week felt hard — next week's volume will be reduced.")
+        st.warning(tr("rest.hard"))
     elif plan["classification"] == "low":
-        st.success("This week felt easy — next week's volume will increase slightly.")
+        st.success(tr("rest.easy"))
     else:
-        st.info("This week felt just right — volume stays the same.")
+        st.info(tr("rest.moderate"))
     if plan["next_week_prescription"] is not None:
-        st.write("**Next week's prescription:** "
-                 f"{format_prescription(plan['next_week_prescription'])}")
+        st.write(tr("rest.next_prescription").format(
+            prescription=format_prescription(plan["next_week_prescription"])))
 
     # Regression prompt (mandatory acknowledgment)
     ack_ok = True
     if plan["regression_to"] is not None:
-        st.warning("⚠️ You've reported high effort for **two weeks in a row**. "
-                   f"For your comfort and safety, your level will be adjusted "
-                   f"from **{user['level']}** to **Level {plan['regression_to']}**.")
+        new_level_value = f"Level {plan['regression_to']}"
+        st.warning(tr("rest.regression_warning").format(
+            current_level=level_display(user["level"]),
+            new_level=level_display(new_level_value)))
         ack_ok = st.checkbox(
-            f"I understand my level will change to Level {plan['regression_to']}.",
+            tr("rest.regression_ack").format(n=level_display(new_level_value)),
             key="regression_ack")
     elif plan["hard_streak"]:
-        st.warning("Two hard weeks in a row — you are already at the safest "
-                   "level (Level 0). Your volume will be reduced instead.")
+        st.warning(tr("rest.hard_streak").format(n=level_display("Level 0")))
 
     with st.form("rest_form"):
-        recall = st.number_input(
-            "How many exercises can you remember learning this week?",
-            0, 6, 0, key="rest_recall")
-        reflection = st.text_area("How does your body feel? (optional)",
-                                  key="rest_reflection")
-        sts = st.number_input("Chair sit-to-stand — cycles in 15 seconds",
-                              0, 30, 0, key="rest_sts")
-        sls_l = st.number_input("Single-leg stance — left (sec)",
-                                0.0, 120.0, 0.0, 0.5, key="rest_sls_l")
-        sls_r = st.number_input("Single-leg stance — right (sec)",
-                                0.0, 120.0, 0.0, 0.5, key="rest_sls_r")
-        submitted = st.form_submit_button("Complete Weekly Review", width="stretch", type="primary")
+        recall = st.number_input(tr("rest.recall"), 0, 6, 0, key="rest_recall")
+        reflection = st.text_area(tr("rest.reflection"), key="rest_reflection")
+        sts = st.number_input(tr("rest.sts"), 0, 30, 0, key="rest_sts")
+        sls_l = st.number_input(tr("rest.sls_left"), 0.0, 120.0, 0.0, 0.5,
+                                key="rest_sls_l")
+        sls_r = st.number_input(tr("rest.sls_right"), 0.0, 120.0, 0.0, 0.5,
+                                key="rest_sls_r")
+        submitted = st.form_submit_button(tr("rest.submit"), width="stretch",
+                                          type="primary")
     if not submitted:
         return
     if not ack_ok:
-        st.error("Please confirm the level change above to continue.")
+        st.error(tr("rest.ack_error"))
         return
 
     queries.upsert_rest_assessment(user["email"], cycle, week, int(recall),

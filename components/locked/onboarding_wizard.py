@@ -14,14 +14,31 @@ subheader ("Check all boxes that apply to you. If none apply, leave them
 unchecked and press Continue."). This states EXISTING behavior (empty
 submission is valid and advances to SARC-F) — no flow change. Buttons use
 width="stretch" per the pinned 1.62 unified sizing API.
+
+Phase 7 (localization; signed off via the localization thread): Step 0
+red-flag LABELS are data-driven from the active-locale rubrics
+(red_flag_labels; the consent-checkbox precedent). RED_FLAGS stays as
+the canonical CODE list (order + rf_{code} widget keys are
+locale-independent) and the EN label fallback — EN rubrics carries codes
+only.
+
+Phase 7 ACTIVATION (team sign-off, localization thread): all wizard
+chrome renders via utils.strings. PREFERENCE_OPTIONS is retained as the
+EN contract constant — the selectbox renders the locale's preference
+labels, INDEX-MAPPED to Level {i} (codes/indices never localize; the
+stored value is unchanged). The confirmation step composes
+level_display names ({n} tokens per the level-composition decision);
+the preference summary renders the level display name of the stored
+value. Logic, flow, widget keys, and compute_final_level are untouched.
 """
 from __future__ import annotations
 from typing import Optional
 import streamlit as st
 from db import queries
 from utils.assessment_logic import calculate_total_score, assign_level_with_preference
-from components.locked.sarc_f_assessment import render_sarc_f_form
+from components.locked.sarc_f_assessment import get_rubrics, render_sarc_f_form
 from components.locked.baseline_timers import render_baseline_form
+from utils.strings import tr, level_display
 
 RED_FLAGS = [
     ("chest_pain", "Chest pain"),
@@ -36,6 +53,18 @@ PREFERENCE_OPTIONS = [
     ("Level 3", "Independent Standing"),
     ("Level 4", "Dynamic Standing"),
 ]
+
+
+def _red_flag_pairs() -> list[tuple[str, str]]:
+    """Red-flag (code, label) pairs for the ACTIVE locale.
+
+    Labels from the locale rubrics' red_flag_labels when present (zh
+    locale files); the EN constant pairs otherwise. Codes and order
+    always come from RED_FLAGS (canonical)."""
+    labels = get_rubrics().get("red_flag_labels")
+    if labels:
+        return [(code, labels[code]) for code, _ in RED_FLAGS]
+    return RED_FLAGS
 
 
 def compute_final_level(red_flags: Optional[str], sarc_f: Optional[int],
@@ -59,7 +88,7 @@ def _flags_to_str(flags: dict) -> str:
 
 
 def render_onboarding_wizard(user: dict) -> None:
-    st.title("Welcome! Let's complete your assessment.")
+    st.title(tr("wizard.title"))
     st.session_state.setdefault("onboarding_step", 0)
     st.session_state.setdefault("onboarding_data", {})
     data = st.session_state["onboarding_data"]
@@ -68,13 +97,12 @@ def render_onboarding_wizard(user: dict) -> None:
 
     # Step 0 — red flags
     if step == 0:
-        st.subheader("Step 1 of 4 — Safety screening")
-        st.caption("Check all boxes that apply to you. If none apply, "
-                   "leave them unchecked and press Continue.")
+        st.subheader(tr("wizard.step1"))
+        st.caption(tr("wizard.step0_caption"))
         with st.form("red_flags_form"):
             flags = {code: st.checkbox(label, key=f"rf_{code}")
-                     for code, label in RED_FLAGS}
-            submitted = st.form_submit_button("Continue", width="stretch")
+                     for code, label in _red_flag_pairs()}
+            submitted = st.form_submit_button(tr("wizard.continue"), width="stretch")
             if submitted:
                 data["red_flags"] = _flags_to_str(flags)
                 st.session_state["onboarding_step"] = 4 if data["red_flags"] else 1
@@ -102,27 +130,29 @@ def render_onboarding_wizard(user: dict) -> None:
 
     # Step 3 — preference
     if step == 3:
-        st.subheader("Step 4 of 4 — Your comfort preference")
+        st.subheader(tr("wizard.step4"))
         with st.form("preference_form"):
-            pref_label = st.selectbox("Your comfort preference",
-                                      [lbl for _, lbl in PREFERENCE_OPTIONS],
+            pref_labels = [tr(f"wizard.preference_{i}") for i in range(5)]
+            pref_label = st.selectbox(tr("wizard.preference_label"),
+                                      pref_labels,
                                       key="pref_label")
-            submitted = st.form_submit_button("Continue", width="stretch")
+            submitted = st.form_submit_button(tr("wizard.continue"), width="stretch")
             if submitted:
-                data["preference_level"] = next(
-                    lvl for lvl, lbl in PREFERENCE_OPTIONS if lbl == pref_label)
+                # Index-mapped: the stored value stays the EN level string.
+                data["preference_level"] = f"Level {pref_labels.index(pref_label)}"
                 st.session_state["onboarding_step"] = 4
                 st.rerun()
                 return
 
     # Step 4 — confirmation
     if step == 4:
-        st.subheader("Review and confirm")
+        st.subheader(tr("wizard.review"))
         rf = data.get("red_flags", "")
-        st.write(f"**Red flags:** {rf if rf else 'None'}")
+        st.write(tr("wizard.red_flags_label").format(
+            red_flags=rf if rf else tr("wizard.red_flags_none")))
         if rf:
-            st.warning("A safety red flag was reported. Your level is set to "
-                       "**Level 0 (Chair-Assisted)** for your safety.")
+            st.warning(tr("wizard.red_flag_warning").format(
+                n=level_display("Level 0")))
             final_level, total = "Level 0", None
         else:
             sarc_f = data["sarc_f"]
@@ -131,13 +161,15 @@ def render_onboarding_wizard(user: dict) -> None:
             pref = data.get("preference_level")
             total = calculate_total_score(sarc_f, calf, bal, chair)
             final_level = assign_level_with_preference(total, sarc_f, age, rf, pref)
-            st.write(f"**SARC-F:** {sarc_f}/10 · **Calf:** {calf} · "
-                     f"**Balance:** {bal} · **Chair-stand:** {chair}")
-            st.write(f"**Total:** {total}/16 (lower = higher function)")
+            st.write(tr("wizard.metrics").format(
+                sarc_f=sarc_f, calf=calf, balance=bal, chair_stand=chair))
+            st.write(tr("wizard.total").format(total=total))
             if pref:
-                st.write(f"**Your preference:** {pref}")
-        st.write(f"### Assigned level: {final_level}")
-        if st.button("Confirm and start training", width="stretch",
+                st.write(tr("wizard.preference_summary").format(
+                    preference=level_display(pref)))
+        st.write(tr("wizard.assigned_level").format(
+            level=level_display(final_level)))
+        if st.button(tr("wizard.confirm"), width="stretch",
                      type="primary"):
             queries.update_user_level(
                 email=user["email"], level=final_level, total_score=total,

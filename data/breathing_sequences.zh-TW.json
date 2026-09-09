@@ -1,0 +1,21 @@
+{
+  "practices": [
+    {"code": "DB01", "title": "第1階級腹式呼吸 (Belly Breathing)", "inhale_s": 3, "hold_s": 0, "exhale_s": 3, "cycles": 10, "focus": "體驗思想與肌肉控制 (Mind-muscle expansion awareness)", "image": "assets/exercises/DB01.jpeg", "purpose": "促進橫膈膜參與發力，減少胸部及輔助肌肉負擔，並提升肺底通氣量。", "instruction": "舒適地坐著或躺下，一手放在胸口，另一手放在腹部上。用鼻子慢慢吸氣 3 秒，感受肚子向外鼓起頂住手掌，同時保持胸口平穩不動。經口輕柔呼氣 3 秒，感受肚子自然凹下。重複進行 10 個循環（約 2 分鐘）。", "audio": "assets/audio/zh-TW/DB01.mp3"},
+    {"code": "DB02", "title": "核心收緊呼吸 (Core Brace)", "inhale_s": 3, "hold_s": 2, "exhale_s": 3, "cycles": 9, "focus": "呼吸期間的深層核心發力 (Deep core engagement during breath)", "image": "assets/exercises/DB02.jpeg", "purpose": "將橫膈膜呼吸與腹內壓控制結合，以在呼吸循環中穩定腰骨盆複合體。", "instruction": "用鼻子吸氣 3 秒，讓腹部自然膨脹。憋氣 2 秒，同時微微收緊腹部肌肉（就像準備承受輕微碰撞）。保持這股輕微的核心緊張感，經口慢慢呼氣 3 秒。重複進行 8 至 10 個循環（約 2 分鐘）。", "audio": "assets/audio/zh-TW/DB02.mp3"},
+    {"code": "DB03", "title": "第2階級腹式呼吸 (Breath_L1_L2)", "inhale_s": 3, "hold_s": 0, "exhale_s": 5, "cycles": 9, "focus": "副交感神經放鬆 (Parasympathetic relaxation)", "image": "assets/exercises/DB03.jpeg", "purpose": "利用延長的呼氣階段刺激迷走神經張力，促進副交感神經放鬆並降低心律。", "instruction": "用鼻子順暢地吸氣 3 秒，吸飽後不要憋氣。經口輕輕吹氣，進行 5 秒的長而慢呼氣，以徹底釋放身體緊張。重複進行 8 至 10 個循環（約 2 分鐘）。", "audio": "assets/audio/zh-TW/DB03.mp3"},
+    {"code": "DB04", "title": "第3階級腹式呼吸和停頓 (Breath_L3_Pause)", "inhale_s": 4, "hold_s": 2, "exhale_s": 6, "cycles": 7, "focus": "肺活量與含氧量提升 (Lung capacity & oxygenation)", "image": "assets/exercises/DB04.jpeg", "purpose": "增加吸氣末期的憋氣時間，以改善肺泡氣體交換、優化動脈血氧，並提升肺部順應性。", "instruction": "用鼻子深吸氣 4 秒。停頓並保持平穩憋氣 2 秒。經口慢慢呼氣 6 秒，直到感覺肺部氣體完全排空。重複進行 6 至 8 個循環（約 2 分鐘）。", "audio": "assets/audio/zh-TW/DB04.mp3"},
+    {"code": "DB05", "title": "第4階級腹式呼吸和8秒吐氣 (Breath_L4_8s)", "inhale_s": 4, "hold_s": 0, "exhale_s": 8, "cycles": 6, "focus": "峰值肺部氣體交換與深層核心回彈 (Peak lung exchange & deep core recoil)", "image": "assets/exercises/DB05.jpeg", "purpose": "利用縮唇呼吸產生呼氣末正壓 (PEEP)，防止細支氣管塌陷，同時將深層核心的彈性回彈力最大化。", "instruction": "用鼻子深吸氣 4 秒。嘴唇微撅（像吹熄蠟燭一樣），然後經縮唇慢慢呼氣足足 8 秒，過程中感受深層核心輕柔地向內收縮。重複進行 5 至 6 個循環（約 2 分鐘）。", "audio": "assets/audio/zh-TW/DB05.mp3"}
+  ],
+  "schedule": [
+    {"week": 0, "days_1_3": ["DB01", "DB02"], "days_4_6": ["DB03"], "day_7": []},
+    {"week": 1, "days_1_3": ["DB03"], "days_4_6": ["DB04"], "day_7": []},
+    {"week": 2, "days_1_3": ["DB04"], "days_4_6": ["DB05"], "day_7": []},
+    {"week": 3, "days_1_3": ["DB05"], "days_4_6": ["DB05"], "day_7": []},
+    {"week": 4, "days_1_3": ["DB05"], "days_4_6": ["DB05"], "day_7": []}
+  ],
+  "safety_text": {
+    "lightheadedness_valve": "如果您在任何時候感到頭暈、氣促或頭昏眼花，請立即停止倒數，並恢復正常且舒適的呼吸節奏。",
+    "orthostatic_warning": "當在躺臥、坐姿或站姿之間轉換姿勢時，請在坐姿暫停 10 至 15 秒。如果出現頭暈，請保持坐著直到完全恢復。",
+    "chair_standard": "請使用放在防滑地面上、穩固且無輪子的椅子。"
+  }
+}

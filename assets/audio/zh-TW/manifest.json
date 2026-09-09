@@ -1,0 +1,213 @@
+{
+  "C01": {
+    "chars": 74,
+    "mp3_sha256": "a8ec442e978709a08580998cc8346546fe9aeb95dd49c84bc63a192be9f99f91",
+    "rate": "-15%",
+    "text_sha256": "1824f6c894350763002a1baff9c8568741c62ced859524ba2765143a3d7153bc",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "C02": {
+    "chars": 53,
+    "mp3_sha256": "2834ecf2674acc0c8fe350e2afe7b249967ea8fef52bb4c6d7940f3383742739",
+    "rate": "-15%",
+    "text_sha256": "9d9290e09ef9ef92d293bd86746b075cdbbcec9d4ba831f9041a962b57db6f7b",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "C03": {
+    "chars": 58,
+    "mp3_sha256": "739dd796880258e5d75eec83de76aefda45e773807fa0a88fcb0b8ac7daf1626",
+    "rate": "-15%",
+    "text_sha256": "104557f7f02c6c84ed2801cd6fdc5b8082149b3a398aebb863e1a0f221ada61b",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "C04": {
+    "chars": 78,
+    "mp3_sha256": "54220a652925f92af88be61db9591c3dd155c76969cb89f8364364005cfe87e9",
+    "rate": "-15%",
+    "text_sha256": "7a32ef54961fb464fba1c95a4a225aab1b7947e43d14d10617fca93b846360fb",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "CM01": {
+    "chars": 54,
+    "mp3_sha256": "5aa5c1e5192c184abbc79f0e776f26038a4bc94ef4c0153ac121d91ac65747f4",
+    "rate": "-15%",
+    "text_sha256": "7b99011dccad27c68b185d9a7adbf0ac66ec6f4cc7420e938cd6173b8c8499a7",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "CM02": {
+    "chars": 64,
+    "mp3_sha256": "a6e4440552a6109c92105d9e10b145eae75ec29c496e2cb7ff84d7cbd049e35b",
+    "rate": "-15%",
+    "text_sha256": "6e357f2bad704fbda34db748e23afae36a9c24358356b2a584a0e207231ec8c1",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "CM03": {
+    "chars": 55,
+    "mp3_sha256": "2f6f7a9d47e85af4fb0088334d9ce2da4bdb8869e44765e8937fd10a80902e4f",
+    "rate": "-15%",
+    "text_sha256": "c1c0a77f72b7431db5b727d3be6716c72dc27c86dc7b4bb7adb9e0ca7bc812aa",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "CM04": {
+    "chars": 67,
+    "mp3_sha256": "f9f4c5b8786b6de251f786220b32881bd8b2c759b3b2827b97fdfa3ccb4e782e",
+    "rate": "-15%",
+    "text_sha256": "de028e992292fcd480edb3a275504597696eb550693c7a208181158377369106",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "DB01": {
+    "chars": 101,
+    "mp3_sha256": "2323b6e85abcbccf325273e0af18787e68871a72445e320b340c3b2b9e37be35",
+    "rate": "-15%",
+    "text_sha256": "c58b24d90c4bfc491c1477a067b5dddf7e2508d39be2fd6dfb3e1966d53bb34d",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "DB02": {
+    "chars": 96,
+    "mp3_sha256": "07669c618e772dc73590e0889d9ca69407e9c4b37218fef624b682e7e2ccfe8c",
+    "rate": "-15%",
+    "text_sha256": "5cd4e8960567a0864eec6f4b2a7ea4a933900cd43e1c0401ab4bcf203e7e1504",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "DB03": {
+    "chars": 75,
+    "mp3_sha256": "05a8e90219f612e333e2b4de226549d72300946ace9b6de7cd2e22804112044f",
+    "rate": "-15%",
+    "text_sha256": "266e31a4ec34b0306a1018a9102e7e4b714881fd7cd74dc113a9b2124245531a",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "DB04": {
+    "chars": 72,
+    "mp3_sha256": "603ae1ee52af786ce25f2ff02b914e7ea4e4b3a10361b618ea703c3618431a73",
+    "rate": "-15%",
+    "text_sha256": "087c789bfa4c2dd4aa799089fa7981587e91638d0e6f0a16b51dad31e1fcfa57",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "DB05": {
+    "chars": 81,
+    "mp3_sha256": "d7a54b9e053dba5f5333083b0b0d574b2bbd4b1e7c5872effafde994cac76fa4",
+    "rate": "-15%",
+    "text_sha256": "e97ee7cde770d9958f3603b5213ab9fead7933a381320ae3179204f24b81ba49",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "G01": {
+    "chars": 61,
+    "mp3_sha256": "63c1ab356ecc194127ed1b1d0a096cccc8960a12836b13fd7551dd80b082eb84",
+    "rate": "-15%",
+    "text_sha256": "99c35dd3caa8e0addd7fa61b3c706a8906f62adb3835c6a652b7730bc94daade",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "G02": {
+    "chars": 55,
+    "mp3_sha256": "eb548284e2379d5a70fc49acbeb5ee37b2d1ce98d3d810fa3549af670a4a17bb",
+    "rate": "-15%",
+    "text_sha256": "6a07c02482b35e137abfd51ae579393e577d2ad7f5661e96a8dd69441f58c412",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "G03": {
+    "chars": 59,
+    "mp3_sha256": "2c846858cef0c07e1130e5388a082716dba008b282b6e5b5711722946a456f7a",
+    "rate": "-15%",
+    "text_sha256": "a3309f324d72e7bb3577b1d2ec38f09e3b19646212d7392b3451743b06507f9f",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "G04": {
+    "chars": 64,
+    "mp3_sha256": "1950bab85f0b4906df1816219c2ff8367d0093d5325738aa8424eb8787c4f6bf",
+    "rate": "-15%",
+    "text_sha256": "4f8962efa3be82a23ffa705d67d08a4b44430c78b67623a1baa1649cdd71d3dd",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "HF01": {
+    "chars": 63,
+    "mp3_sha256": "c338d5c43cbae8709306e439f08a86de8addccab4109ce368794a45702101ee0",
+    "rate": "-15%",
+    "text_sha256": "32797e106950865c1c84898d35007e79cb0acf7c95990dc5774704b7e2bf5991",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "HF02": {
+    "chars": 59,
+    "mp3_sha256": "e73a3460dadb70a56d3f837e4a59d50701efbb1084a7b49ca8a7d4f726275560",
+    "rate": "-15%",
+    "text_sha256": "00ebd0a80935577a4a34e4e5c465d1370470d6cd13e78cadfc9453e48792ab9b",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "HF03": {
+    "chars": 51,
+    "mp3_sha256": "686275a4b0cc593144f985b5f2af8b22121d24ceccb754e26806ec1c16726c42",
+    "rate": "-15%",
+    "text_sha256": "ff3b05e486b65b35d49367e70f0518d7ecb9b90713663fbe040eba7391ab584e",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "HF04": {
+    "chars": 72,
+    "mp3_sha256": "97b253cdf58be8e406d5b69829987af5aa07558ed44658f7a073e392a4405159",
+    "rate": "-15%",
+    "text_sha256": "cc01db021a78280fdb7ad35332443a9f6a7b672d6c6b1a5d4c59d3b51bf8c6c2",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "PC01": {
+    "chars": 71,
+    "mp3_sha256": "c9956477c6b87348259b8072ca7acfcc0f8463ac440c30d61e700755a5f964c6",
+    "rate": "-15%",
+    "text_sha256": "7c6a22d1d3b4b186a5c0a255f14b0d52a37c795c388ab1de62d0f252435bc58c",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "PC02": {
+    "chars": 71,
+    "mp3_sha256": "5cd21f49f7fbffd2e3330f2b1922ee71ea7a91a169829966c6b6c5a32af57aed",
+    "rate": "-15%",
+    "text_sha256": "93b9ba14202ed0730872b7ea4a723ccda73c2304fd90f22ed27c994b2347cb8b",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "PC03": {
+    "chars": 70,
+    "mp3_sha256": "a88b74f3437645798075056e632c43f93d82ec23b1ab86bdcc3f3deed55bc4c1",
+    "rate": "-15%",
+    "text_sha256": "7bb36aa11d39d700eb8ef61283e9071451669ee8298c65d6e90df9e2ceb46f0c",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "PC04": {
+    "chars": 59,
+    "mp3_sha256": "4fb4f5a2f8e3e3d7a4548f72ceb878135f69d88609e50c6d14daeeedcfe68bb1",
+    "rate": "-15%",
+    "text_sha256": "4187bbf36b607708ba3221e9851d9bb21eb4109d8239fcddb55b2f26914ea4a4",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "SP01": {
+    "chars": 61,
+    "mp3_sha256": "01b1f1c6da0b0aec7bc5c8cd185149d4740eb4a508ef035137c5a780b70c7355",
+    "rate": "-15%",
+    "text_sha256": "d46c165fff8afad53596a4d3205049e5d9ac638cdd29194479bc4a102d1103a8",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "SP02": {
+    "chars": 67,
+    "mp3_sha256": "57f30e40c197b1d5ddc71e65892c9f62fabfa440ae993b31b824dba6afd8ac85",
+    "rate": "-15%",
+    "text_sha256": "aaba63bf98e225e24e16b0cfde98276a227dbf804499afa6f9ef9e0357cb0587",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "SP03": {
+    "chars": 66,
+    "mp3_sha256": "83c7e5604d298c0e803050b9d3e619c343e5443996127d88c19cda2bb4f9f03b",
+    "rate": "-15%",
+    "text_sha256": "53c8126497eec3101895852a69273441057ac49067c1e7bc95d62a674fa368d5",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "SP04": {
+    "chars": 66,
+    "mp3_sha256": "92cfa5df395539f45a6c3d06d48e20606f900cb2ad211e0f4a32f899cfd4137e",
+    "rate": "-15%",
+    "text_sha256": "a819de6ebb6733ee119d7f0393e15c132dd2732679395f0892b2f6f2edc16053",
+    "voice": "zh-TW-HsiaoChenNeural"
+  },
+  "_meta": {
+    "engine": "edge-tts",
+    "generated_at": "2026-09-09T04:42:41.302258+00:00",
+    "locale": "zh-TW",
+    "note": "text_sha256 binds each mp3 to the exact instruction string it was generated from; a mismatch with the locale's data/*.json means stale audio — regenerate.",
+    "rate": "-15%",
+    "voice": "zh-TW-HsiaoChenNeural"
+  }
+}

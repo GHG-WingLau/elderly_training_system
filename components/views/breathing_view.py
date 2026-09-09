@@ -29,6 +29,16 @@ Change #12: narration — a native st.audio player renders directly under
 each instruction (utils.assets.render_audio; B1: always visible, no
 autoplay, no session flags; missing audio renders nothing — text is
 authoritative; 48px floor via the audio rule in styles/custom.css).
+
+Localization thread (team decision): the cadence line's "(~2 min)"
+approximate-duration tail is DROPPED — each practice's data instruction
+carries its own duration; the code-side approximation was redundant and
+not per-practice-accurate. Narration unaffected (the manifest binds
+instruction text, not the cadence line).
+
+Phase 7 (view conversion): all chrome renders via utils.strings —
+under EN, tr returns the exact pinned label-contract literals; widget
+keys and the subheader/code structure are unchanged.
 """
 from __future__ import annotations
 
@@ -37,6 +47,7 @@ import streamlit as st
 from utils.session_logic import get_session_position
 from utils.breathing_logic import get_breathing_practices, get_safety_text
 from utils.assets import render_image, render_audio
+from utils.strings import tr
 
 STARTED_KEY = "breathing_started"  # STATE.md: dict[str, bool] code -> running
 
@@ -97,9 +108,9 @@ def render_breathing_session(user: dict) -> None:
     pos = get_session_position(user["email"])
     practices = get_breathing_practices(pos["week"], pos["day"])
     safety = get_safety_text()
-    st.title("Stage 1 — Breathing")
+    st.title(tr("breathing.title"))
     if not practices:
-        st.warning("No breathing session scheduled for today.")
+        st.warning(tr("breathing.no_session"))
 
     # Self-heal the started-flags to today's schedule (STATE.md rule).
     st.session_state[STARTED_KEY] = _pruned_started(
@@ -110,38 +121,39 @@ def render_breathing_session(user: dict) -> None:
         st.subheader(f"{p['code']} — {p['title']}")
         st.write(p["purpose"])  # brief description before presentation
         render_image(p.get("image"), label=p["title"],
-                     caption=f"Illustration: {p['title']}")
+                     caption=tr("breathing.illustration_caption").format(
+                         title=p["title"]))
         st.write(f"_{p['focus']}_")
-        st.write(f"**Inhale** {p['inhale_s']}s · **Hold** {p['hold_s']}s · "
-                 f"**Exhale** {p['exhale_s']}s · **{p['cycles']} cycles** (~2 min)")
+        st.write(tr("breathing.cadence").format(
+            inhale_s=p["inhale_s"], hold_s=p["hold_s"],
+            exhale_s=p["exhale_s"], cycles=p["cycles"]))
         st.write(p["instruction"])  # approved copy; plain, not italic
         render_audio(p.get("audio"))  # change #12 — narration alongside
         if started:
-            if st.button(f"⏹ Stop the breathing circle — {p['title']}",
+            if st.button(tr("breathing.stop_circle").format(title=p["title"]),
                          key=f"btn_breath_stop_{p['code']}", width="stretch"):
                 st.session_state[STARTED_KEY][p["code"]] = False
                 st.rerun()
         else:
-            if st.button(f"▶ Start the breathing circle — {p['title']}",
+            if st.button(tr("breathing.start_circle").format(title=p["title"]),
                          key=f"btn_breath_start_{p['code']}", width="stretch"):
                 # Mutual exclusion: one running ring at a time —
                 # simultaneous rings would give conflicting pace cues.
                 st.session_state[STARTED_KEY] = {p["code"]: True}
                 st.rerun()
         if started:
-            st.write(f"Follow the circle with your breath — it stops by "
-                     f"itself after {p['cycles']} cycles.")
+            st.write(tr("breathing.running_guidance").format(
+                cycles=p["cycles"]))
             st.iframe(_metronome_html(p, p["code"].lower()),
                       height=RING_HEIGHT)
         else:
-            st.write(f"When you are ready, tap Start — the circle will "
-                     f"move with your breath and stop by itself after "
-                     f"{p['cycles']} cycles.")
+            st.write(tr("breathing.start_guidance").format(
+                cycles=p["cycles"]))
         st.info(f"🪑 {safety['chair_standard']}")
         st.info(f"⚠ {safety['orthostatic_warning']}")
         if any(p["code"] == "DB05" for p in practices):
             st.warning(f"⚠ {safety['lightheadedness_valve']}")
-    if st.button("Start Exercises", key="btn_start_exercises",
+    if st.button(tr("breathing.start_exercises"), key="btn_start_exercises",
                  width="stretch", type="primary"):
         st.session_state.pop(STARTED_KEY, None)  # leaving the page clears flags
         st.session_state["current_state"] = "EXERCISE_SESSION"

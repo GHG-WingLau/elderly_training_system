@@ -1,8 +1,13 @@
-"""Phase 4 — PROGRAM_COMPLETE view: summary + cycle restart actions."""
+"""Phase 4 — PROGRAM_COMPLETE view: summary + cycle restart actions.
+
+Phase 7 (view conversion): chrome via utils.strings; button keys
+unchanged.
+"""
 from __future__ import annotations
 import streamlit as st
 
 from db import queries
+from utils.strings import tr
 
 
 def _restart(user: dict, reassess: bool) -> None:
@@ -17,16 +22,18 @@ def _restart(user: dict, reassess: bool) -> None:
 
 
 def render_program_complete(user: dict) -> None:
-    st.title("🎉 Program Complete!")
+    st.title(tr("program_complete.title"))
     st.balloons()
     n = queries.count_completed_workouts(user["email"], user["current_cycle"])
-    st.write(f"You completed **{n} workouts** across 5 weeks, "
-             f"{user['username']} — outstanding work!")
-    st.write("Choose how you'd like to continue:")
+    st.write(tr("program_complete.congrats").format(
+        n=n, username=user["username"]))
+    st.write(tr("program_complete.choose"))
     c1, c2 = st.columns(2)
     with c1:
-        if st.button("Retake Assessment & Restart", key="btn_retake", width="stretch"):
+        if st.button(tr("program_complete.retake"), key="btn_retake",
+                     width="stretch"):
             _restart(user, reassess=True)
     with c2:
-        if st.button("Restart with Current Level", key="btn_restart", width="stretch"):
+        if st.button(tr("program_complete.restart"), key="btn_restart",
+                     width="stretch"):
             _restart(user, reassess=False)
