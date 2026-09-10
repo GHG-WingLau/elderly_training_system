@@ -17,27 +17,23 @@ creates a 30-day session token and places it in st.query_params["t"];
 the URL then carries the token (bookmark = stay logged in); app.py's
 try_restore_session() restores at boot. Unchecked = plain session.
 
-Phase 7 localization (skeleton): language picker call added below the
-title — INERT until a second locale ships (utils.locale gates on
-SUPPORTED_LOCALES). View strings remain EN until the code-side
-UI-strings source is signed off (§5 census).
+Phase 7: language picker; consent gate renders the active locale's
+document; SEX labels localize (values U/M/F never do); registration
+records the session locale (users.locale). All chrome via
+utils.strings; REMEMBER_LABEL and SEX_OPTIONS retained as the EN
+contract constants. 
+EN contract values (equal the ui_strings EN values; rendered via tr).
 
-Phase 7 decision (a): registration records the session locale
-(users.locale) alongside the consent evidence columns — pinned by
-test_registration_captures_session_locale.
-
-Phase 7 (loader step): the consent gate renders the ACTIVE LOCALE's
-document — per-locale caches; EN keeps the base filename; locales use
-consent.{locale}.json. A zh-HK registration therefore records
-consent_version "v1.1-zh-HK" (§7.8) once zh-HK activates. The
-checkbox label is data-driven (the helpers_e2e precedent survives
-localization for free).
-
-Phase 7 (view conversion): all chrome renders via utils.strings (tr);
-SEX option labels localize, their VALUES (U/M/F) never do;
-REMEMBER_LABEL and SEX_OPTIONS are retained as the EN contract
-constants — the rendered labels come from ui_strings. EN rendering is
-byte-identical.
+Phase 8 (beta-feedback fix, live site): a first-time visitor read the
+landing page as "register for a 30-day paid trial." Fixes (user-
+approved): (1) a PERMANENT orientation block above the tabs — station 0
+of the walkthrough; not a dismissible hint (pre-auth has no profile,
+and a landing page orients everyone, including returning visitors who
+forgot); (2) REMEMBER_LABEL reworded — the "(30 days)" figure is
+dropped (it was read as the program's duration; the real duration,
+5 weeks, now appears in the orientation copy); (3) tab order kept
+as-is. Orientation copy is PROVISIONAL EN (the approved four
+sentences); ui_strings migration + zh land with the translation round.
 """
 from __future__ import annotations
 
@@ -55,7 +51,18 @@ from utils.strings import tr
 
 SEX_OPTIONS = {"Prefer not to say": "U", "Male": "M", "Female": "F"}
 
-REMEMBER_LABEL = "Keep me logged in on this device (30 days)"
+REMEMBER_LABEL = "Keep me logged in on this device"
+
+# Phase 8 landing orientation (approved copy; provisional EN — the
+# ui_strings migration + zh translation land with the translation round).
+ORIENTATION_LEAD = ("A gentle 5-week exercise program you can do at "
+                    "home — free.")
+ORIENTATION_BODY = ("Designed for adults 60+. Each day takes about "
+                    "15–30 minutes: a breathing practice plus 3 simple "
+                    "exercises.")
+ORIENTATION_ACCOUNT = ("Creating a free account (email + password) saves "
+                       "your progress so the program can adapt to you. "
+                       "There is no payment and nothing to cancel.")
 
 _CONSENT_DIR = (Path(__file__).resolve().parent.parent.parent / "data")
 _consent_caches: dict[str, dict] = {}
@@ -79,7 +86,11 @@ def _sex_options() -> dict:
 
 def render_auth() -> None:
     st.title(tr("auth.title"))
-    render_language_picker()  # 7.4 — inert while only "en" ships
+    render_language_picker()  # 7.4 — language wayfinding first
+    # Phase 8 — orientation (permanent, every visitor, both tabs).
+    st.info(f"**{tr('auth.orientation_lead')}**\n\n"
+            f"{tr('auth.orientation_body')}\n\n"
+            f"{tr('auth.orientation_account')}")
     consent = _load_consent()
     micro = consent["micro"]
     tab_return, tab_new = st.tabs([tr("auth.tab_returning"),
@@ -135,7 +146,8 @@ def render_auth() -> None:
                                   max_value=110, value=65, step=1, key="reg_age")
             sex_label = st.selectbox(
                 tr("auth.sex_label"),
-                list(_sex_options()), key="reg_sex")
+                list(_sex_options()),
+                key=f"reg_sex_{get_locale()}")
             st.caption(tr("auth.password_caption").format(
                 min_length=MIN_PASSWORD_LENGTH,
                 required_note=micro["required_note"]))

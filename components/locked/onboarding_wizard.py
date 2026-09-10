@@ -8,30 +8,34 @@ Step 4 confirmation -> update_user_level -> DAILY_HUB
 compute_final_level() is a pure function (no Streamlit) and is the unit-tested
 safety contract for this phase.
 
-Phase 6 label-readability change (#14, signed off per user direction —
-presentation only, no logic): Step 0 gains a guidance line under its
-subheader ("Check all boxes that apply to you. If none apply, leave them
-unchecked and press Continue."). This states EXISTING behavior (empty
-submission is valid and advances to SARC-F) — no flow change. Buttons use
-width="stretch" per the pinned 1.62 unified sizing API.
+Phase 6 #14 / Phase 7 / Phase 9 history: guidance caption; tr-driven
+chrome; preference selectbox index-mapped; red-flag labels data-driven;
+baseline recorded at confirmation.
 
-Phase 7 (localization; signed off via the localization thread): Step 0
-red-flag LABELS are data-driven from the active-locale rubrics
-(red_flag_labels; the consent-checkbox precedent). RED_FLAGS stays as
-the canonical CODE list (order + rf_{code} widget keys are
-locale-independent) and the EN label fallback — EN rubrics carries codes
-only.
+Phase 10 (signed off — FLOW-ONLY; safety contract, scoring, and clinical
+semantics untouched): BACK NAVIGATION. _previous_step derives the
+target (Step 0 for the red-flag fast path, Step 3 for the normal path);
+entered values persist by widget key.
 
-Phase 7 ACTIVATION (team sign-off, localization thread): all wizard
-chrome renders via utils.strings. PREFERENCE_OPTIONS is retained as the
-EN contract constant — the selectbox renders the locale's preference
-labels, INDEX-MAPPED to Level {i} (codes/indices never localize; the
-stored value is unchanged). The confirmation step composes
-level_display names ({n} tokens per the level-composition decision);
-the preference summary renders the level display name of the stored
-value. Logic, flow, widget keys, and compute_final_level are untouched.
+Phase 10 v2 (user feedback — usability; signed off via the thread):
+(a) the Back button is COMPACT (auto width) and renders BELOW each
+step's primary action — the full-width top placement read as out of
+place; the 48px CSS floor still applies.
+(b) CONFIRMATION-PAGE READABILITY: the red-flags line shows localized
+LABELS, never the stored codes (the raw-code display was a genuine
+defect); per-measure score lines carry plain-language descriptions; a
+score legend; an intro line that also teaches Back; a level note that
+states existing behavior (weekly autoregulation). The compact
+wizard.metrics line goes DORMANT (localized; kept in ui_strings). The
+new copy is PROVISIONAL EN — the next translation round migrates it
+(7 strings).
+
+v8 (translation round landed): the seven confirmation strings render
+from ui_strings (tr-driven; constants retained as EN contract values).
+The app remains 100% localized.
 """
 from __future__ import annotations
+from datetime import datetime, timezone
 from typing import Optional
 import streamlit as st
 from db import queries
@@ -39,6 +43,7 @@ from utils.assessment_logic import calculate_total_score, assign_level_with_pref
 from components.locked.sarc_f_assessment import get_rubrics, render_sarc_f_form
 from components.locked.baseline_timers import render_baseline_form
 from utils.strings import tr, level_display
+from utils.locale import get_locale
 
 RED_FLAGS = [
     ("chest_pain", "Chest pain"),
@@ -53,7 +58,18 @@ PREFERENCE_OPTIONS = [
     ("Level 3", "Independent Standing"),
     ("Level 4", "Dynamic Standing"),
 ]
-
+# EN contract constants — equal the ui_strings EN values (rendered via
+# tr since the Phase 10 v2 translation round; the tests import none of
+# these — parity/no-leakage checks cover them).
+CONFIRM_INTRO = ("Here is a summary of your answers. Press Back to "
+                 "change anything, then Confirm to begin.")
+MEASURE_SARCF = "SARC-F: {score} / 10 — how easy everyday movements feel"
+MEASURE_CALF = "Calf: {score} / 2 — leg muscle size"
+MEASURE_BALANCE = "Balance: {score} / 2 — standing on one leg"
+MEASURE_CHAIR = "Chair-stand: {score} / 2 — getting up from a chair"
+SCORE_LEGEND = "0 is the best score on every measure."
+LEVEL_NOTE = ("The exercises will start at a level that matches how you "
+              "feel today, and the program adjusts as you go.")
 
 def _red_flag_pairs() -> list[tuple[str, str]]:
     """Red-flag (code, label) pairs for the ACTIVE locale.
@@ -65,6 +81,42 @@ def _red_flag_pairs() -> list[tuple[str, str]]:
     if labels:
         return [(code, labels[code]) for code, _ in RED_FLAGS]
     return RED_FLAGS
+
+
+def _red_flag_labels_str(rf: str) -> str:
+    """Localized DISPLAY labels for the stored red-flag codes ("" when
+    none). The DB keeps codes (contract); the confirmation page shows
+    labels — the v2 readability fix (raw codes were shown before)."""
+    if not rf:
+        return ""
+    label_by_code = dict(_red_flag_pairs())
+    return ", ".join(label_by_code.get(code.strip(), code.strip())
+                     for code in rf.split(","))
+
+
+def _previous_step(data: dict, step: int) -> int:
+    """PURE (unit-tested): the Back target for the given step.
+
+    Steps 1–3 -> the previous step. Step 4 -> DERIVED: Step 0 when the
+    wizard arrived via the red-flag fast path (red flags set, no SARC-F
+    data — the mistake-recovery path), Step 3 for the normal path."""
+    if step in (1, 2, 3):
+        return step - 1
+    if data.get("red_flags") and "sarc_f" not in data:
+        return 0          # fast path: back to the safety screen
+    return 3              # normal path: back to the preference step
+
+
+def _back_button(data: dict, step: int) -> None:
+    """Compact Back affordance, rendered BELOW the step's primary
+    action (v2: the full-width top placement read as out of place).
+    No-op on Step 0. Auto width — the 48px target floor still applies
+    via the button CSS."""
+    if step == 0:
+        return
+    if st.button(tr("wizard.back"), key=f"wizard_back_{step}"):
+        st.session_state["onboarding_step"] = _previous_step(data, step)
+        st.rerun()
 
 
 def compute_final_level(red_flags: Optional[str], sarc_f: Optional[int],
@@ -112,6 +164,7 @@ def render_onboarding_wizard(user: dict) -> None:
     # Step 1 — SARC-F
     if step == 1:
         result = render_sarc_f_form()
+        _back_button(data, step)
         if result:
             data["sarc_f"] = result["sarc_f_score"]
             data["sarc_f_items"] = result["item_scores"]
@@ -122,6 +175,7 @@ def render_onboarding_wizard(user: dict) -> None:
     # Step 2 — baseline
     if step == 2:
         result = render_baseline_form(sex)
+        _back_button(data, step)
         if result:
             data.update(result)
             st.session_state["onboarding_step"] = 3
@@ -135,7 +189,7 @@ def render_onboarding_wizard(user: dict) -> None:
             pref_labels = [tr(f"wizard.preference_{i}") for i in range(5)]
             pref_label = st.selectbox(tr("wizard.preference_label"),
                                       pref_labels,
-                                      key="pref_label")
+                                      key=f"pref_label_{get_locale()}")
             submitted = st.form_submit_button(tr("wizard.continue"), width="stretch")
             if submitted:
                 # Index-mapped: the stored value stays the EN level string.
@@ -143,13 +197,16 @@ def render_onboarding_wizard(user: dict) -> None:
                 st.session_state["onboarding_step"] = 4
                 st.rerun()
                 return
+        _back_button(data, step)
 
-    # Step 4 — confirmation
+    # Step 4 — confirmation (v2 readability layout)
     if step == 4:
         st.subheader(tr("wizard.review"))
+        st.write(tr("wizard.confirm_intro"))
         rf = data.get("red_flags", "")
         st.write(tr("wizard.red_flags_label").format(
-            red_flags=rf if rf else tr("wizard.red_flags_none")))
+            red_flags=_red_flag_labels_str(rf)
+            or tr("wizard.red_flags_none")))
         if rf:
             st.warning(tr("wizard.red_flag_warning").format(
                 n=level_display("Level 0")))
@@ -161,16 +218,32 @@ def render_onboarding_wizard(user: dict) -> None:
             pref = data.get("preference_level")
             total = calculate_total_score(sarc_f, calf, bal, chair)
             final_level = assign_level_with_preference(total, sarc_f, age, rf, pref)
-            st.write(tr("wizard.metrics").format(
-                sarc_f=sarc_f, calf=calf, balance=bal, chair_stand=chair))
+            st.write(tr("wizard.measure_sarcf").format(score=sarc_f))
+            st.write(tr("wizard.measure_calf").format(score=calf))
+            st.write(tr("wizard.measure_balance").format(score=bal))
+            st.write(tr("wizard.measure_chair").format(score=chair))
             st.write(tr("wizard.total").format(total=total))
+            st.caption(tr("wizard.score_legend"))
             if pref:
                 st.write(tr("wizard.preference_summary").format(
                     preference=level_display(pref)))
         st.write(tr("wizard.assigned_level").format(
             level=level_display(final_level)))
+        st.caption(tr("wizard.level_note"))
         if st.button(tr("wizard.confirm"), width="stretch",
                      type="primary"):
+            if "calf_cm" in data:
+                # Phase 9 Step 2: record the raw baseline measures
+                # (red-flag fast-path has none — guard by key presence).
+                queries.record_baseline(
+                    email=user["email"],
+                    baseline={
+                        "calf_cm": data["calf_cm"],
+                        "sls_left_sec": data["sls_left_sec"],
+                        "sls_right_sec": data["sls_right_sec"],
+                        "chair_stand_reps": data["chair_stand_reps"],
+                        "measured_at": datetime.now(timezone.utc).isoformat(),
+                    })
             queries.update_user_level(
                 email=user["email"], level=final_level, total_score=total,
                 sarc_f=data.get("sarc_f"), calf=data.get("calf_score"),
@@ -185,3 +258,4 @@ def render_onboarding_wizard(user: dict) -> None:
             for k in ("onboarding_step", "onboarding_data"):
                 st.session_state.pop(k, None)
             st.rerun()
+        _back_button(data, step)

@@ -31,6 +31,7 @@ Widget keys unchanged.
 from __future__ import annotations
 
 import streamlit as st
+from utils.hints import HINT_TRAINING, render_hint
 
 from utils.session_logic import (
     get_session_position,
@@ -74,7 +75,7 @@ def render_training_session(user: dict) -> None:
                                 pos["week"], lvl)
 
     st.title(tr("training.title"))
-
+    render_hint(user, HINT_TRAINING)
     # position-tagged keys prevent stale RPE leaking across days
     key_tag = f"{pos['cycle']}_{pos['week']}_{pos['day']}"
 

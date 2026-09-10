@@ -6,19 +6,18 @@ the single logout path.
 Step 2b follow-up (bookmark reminder): shown ONLY when the remember-me
 token is in the URL (?t=) — exactly the sessions where bookmarking the
 current page captures persistent login. Users who declined "remember"
-see no tip (the advice wouldn't work for them). Always-on-while-token-
-present for beta; a dismiss-once variant needs DB state and is a
-recorded post-beta refinement option. Known caveat (DECISIONS): a
-bookmark made before a later logout holds a dead token — one re-login
-and re-bookmark recovers.
+see no tip (the advice wouldn't work for them).
 
-Phase 7 (7.4): language picker below the title — the post-auth call
-site; selections persist to users.locale here.
+Phase 7 (7.4): language picker below the title; the info line composes
+level_display. BOOKMARK_TIP is retained as the EN contract constant.
 
-Phase 7 (view conversion): chrome via utils.strings; the info line
-composes level_display (the accepted descriptor gain materializes for
-EN here). BOOKMARK_TIP is retained as the EN contract constant — the
-rendered tip comes from ui_strings.
+Phase 8 (first-run guidance, option B): the hub hint (first visit,
+dismiss-once, profile-backed via users.ui_hints) renders above the
+day's primary action; the persistent "How to use" expander below the
+bookmark tip is the re-access path that makes dismissal safe. Copy is
+provisional EN (utils/hints constants) — ui_strings migration with the
+zh translations is the next change. The bookmark-tip dismiss-once
+(un-parked) will ride the same hint store.
 """
 from __future__ import annotations
 
@@ -28,6 +27,8 @@ from utils.session_logic import get_session_position
 from utils.auth import TOKEN_PARAM, clear_session_state
 from utils.locale import render_language_picker
 from utils.strings import tr, level_display
+from utils.hints import (HINT_BOOKMARK, HINT_HUB, render_help_expander,
+                         render_hint)
 
 BOOKMARK_TIP = ("💡 Stay logged in: bookmark this page now — on your phone, "
                 "use Add to Home Screen. Next time, your bookmark opens "
@@ -45,6 +46,7 @@ def render_daily_hub(user: dict) -> None:
     st.info(tr("hub.info").format(
         level=level_display(user["level"]), cycle=pos["cycle"],
         week=pos["week"], day=pos["day"]))
+    render_hint(user, HINT_HUB)
     if pos["is_rest_day"]:
         st.write(tr("hub.rest_day"))
         if st.button(tr("hub.start_review"), key="btn_start_review",
@@ -58,7 +60,9 @@ def render_daily_hub(user: dict) -> None:
             st.session_state["current_state"] = "BREATHING_SESSION"
             st.rerun()
     if st.query_params.get(TOKEN_PARAM):
-        st.info(tr("hub.bookmark_tip"))  # targeted: token present
+        # Phase 8: dismiss-once (un-parked) — still token-conditional.
+        render_hint(user, HINT_BOOKMARK, body=tr("hub.bookmark_tip"))
+    render_help_expander()  # Phase 8 — persistent, never dismissed
     st.divider()
     if st.button(tr("hub.logout"), key="btn_logout"):
         clear_session_state()

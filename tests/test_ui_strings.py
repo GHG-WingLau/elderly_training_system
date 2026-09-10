@@ -59,7 +59,7 @@ def _cjk(s):
 def test_ui_strings_key_parity_and_no_leakage(loc):
     en = _flatten(_load("ui_strings.json"))
     zh = _flatten(_load(f"ui_strings.{loc}.json"))
-    assert len(en) == 130                       # count pinned
+    assert len(en) == 175                       # count pinned
     assert set(zh) == set(en)
     for k, v in zh.items():
         assert isinstance(v, str) and v.strip()

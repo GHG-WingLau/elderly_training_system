@@ -8,29 +8,24 @@ SELECT opens an implicit transaction. READ functions MUST end with
 conn.rollback() — otherwise the cached connection idles IN an open
 transaction and Neon's idle_in_transaction_session_timeout (~5 min)
 terminates it server-side (the 2026-09-07 drill incident). Every read
-below follows the pattern; writes end with commit() as before. A read
-that forgets rollback still heals via DEAD_CONNECTION_ERRORS in
-db/database.py — but tests/test_transaction_hygiene.py pins the hygiene
-directly (pg_stat_activity state must be 'idle', never 'idle in
-transaction').
+below follows the pattern; writes end with commit() as before.
 
 Step 2a: create_user carries password_hash/consent columns (ON CONFLICT
 update set deliberately excludes them — auth_view's duplicate-email gate
 guards re-registration); session-token functions (30-day default,
 opportunistic purge).
 
-Phase 7 (localization, 7.4.3): set_user_locale persists the UI-locale
-preference to users.locale (nullable; NULL = resolution-chain default).
-Single-statement write like set_user_level; reads flow through get_user
-(SELECT *), which includes the column.
+Phase 7 (7.4.3): set_user_locale persists the UI-locale preference;
+create_user records the registration-session locale (decision (a)).
 
-Phase 7 decision (a): create_user also records the registration-session
-locale (auth_view passes utils.locale.get_locale()). The ON CONFLICT
-update set excludes locale too — the duplicate-email gate guards the
-path; the value is a preference, never a registration fact.
+Phase 8 (first-run guidance): dismiss_ui_hint merges a dismissed hint
+key into users.ui_hints — a single-statement idempotent JSONB merge
+(re-dismissing the same key converges); the session user dict is
+refreshed by the caller after the write (the Phase 4 rule).
 """
 from __future__ import annotations
 
+import json
 import secrets
 from datetime import datetime, timedelta, timezone
 from typing import Optional
@@ -107,7 +102,8 @@ def advance_cycle(email: str) -> int:
 def set_user_level(email: str, level: str) -> None:
     """Light level update for mid-cycle regression (scores untouched)."""
     conn = get_connection()
-    conn.execute("UPDATE users SET level = %s WHERE email = %s", (level, email))
+    conn.execute("UPDATE users SET level = %s WHERE email = %s", (level, email)
+                 )
     conn.commit()
 
 
@@ -122,6 +118,39 @@ def set_user_locale(email: str, locale: str) -> None:
                  (locale, email))
     conn.commit()
 
+
+def dismiss_ui_hint(email: str, key: str) -> None:
+    """Phase 8: record a dismissed UI hint (users.ui_hints JSONB map,
+    dismissed key -> ISO timestamp).
+
+    Single-statement idempotent merge: re-dismissing an already-dismissed
+    key converges (the timestamp refresh is inert). Callers refresh the
+    session user dict from get_user() after the write (Phase 4 rule).
+    """
+    stamp = datetime.now(timezone.utc).isoformat()
+    conn = get_connection()
+    conn.execute(
+        """UPDATE users
+        SET ui_hints = COALESCE(ui_hints, '{}'::jsonb) || %s::jsonb
+        WHERE email = %s""",
+        (json.dumps({key: stamp}), email),
+    )
+    conn.commit()
+    
+def record_baseline(email: str, baseline: dict) -> None:
+    """Phase 9 (Step 2): store the onboarding baseline measures (RAW
+    values — the band sub-scores were already persisted at assessment).
+
+    Plain SET (overwrite): a re-assessment cycle measures a NEW
+    baseline and latest-wins, mirroring the Phase-4 re-assessment
+    decision; weekly history lives in rest_assessments.
+    """
+    conn = get_connection()
+    conn.execute(
+        "UPDATE users SET baseline = %s::jsonb WHERE email = %s",
+        (json.dumps(baseline), email),
+    )
+    conn.commit()
 
 def upsert_training_progress(email: str, cycle: int, week: int, day: int,
                              exercise_ids: str, rpe_scores: str) -> None:
@@ -202,6 +231,18 @@ def get_completed_rests(email: str, cycle: int) -> set:
     conn.rollback()  # release the implicit read transaction
     return {r["week"] for r in rows}
 
+def get_rest_assessment_history(email: str, cycle: int) -> list:
+    """Phase 9, Step 3: the cycle's review rows (week, stance L/R,
+    15-second sit-to-stand), ordered by week — the progression chart's
+    weekly points. Read-only; rollback hygiene as everywhere."""
+    conn = get_connection()
+    rows = conn.execute(
+        "SELECT week, sls_left_sec, sls_right_sec, sit_to_stand_15s_cycles "
+        "FROM rest_assessments WHERE user_email = %s AND cycle = %s "
+        "ORDER BY week",
+        (email, cycle)).fetchall()
+    conn.rollback()  # release the implicit read transaction
+    return rows
 
 def get_rpe_scores_for_week(email: str, cycle: int, week: int) -> list:
     conn = get_connection()

@@ -48,6 +48,7 @@ from utils.session_logic import get_session_position
 from utils.breathing_logic import get_breathing_practices, get_safety_text
 from utils.assets import render_image, render_audio
 from utils.strings import tr
+from utils.hints import HINT_BREATHING, render_hint
 
 STARTED_KEY = "breathing_started"  # STATE.md: dict[str, bool] code -> running
 
@@ -109,6 +110,7 @@ def render_breathing_session(user: dict) -> None:
     practices = get_breathing_practices(pos["week"], pos["day"])
     safety = get_safety_text()
     st.title(tr("breathing.title"))
+    render_hint(user, HINT_BREATHING)
     if not practices:
         st.warning(tr("breathing.no_session"))
 

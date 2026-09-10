@@ -57,8 +57,8 @@ def render_sarc_f_form() -> Optional[dict]:
     with st.form("sarc_f_form"):
         item_scores: dict[str, int] = {}
         for it in items:
-            choice = st.selectbox(it["label"], it["options"], key=f"sarcf_{it['name']}")
-            item_scores[it["name"]] = it["options"].index(choice)
+            choice = st.selectbox(it["label"], it["options"],
+                                  key=f"sarcf_{it['name']}_{safe_locale()}")
         submitted = st.form_submit_button(tr("wizard.continue"), width="stretch")
     if not submitted:
         return None

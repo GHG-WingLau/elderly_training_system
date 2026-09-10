@@ -1,12 +1,14 @@
 {
-  "app": {"page_title": "長者網上運動訓練系統"},
+  "app": {
+    "page_title": "長者網上運動訓練系統"
+  },
   "auth": {
     "title": "🏃 長者網上運動訓練系統",
     "tab_returning": "舊用戶登入",
     "tab_new": "新用戶註冊",
     "email": "電郵地址",
     "password": "密碼",
-    "remember_label": "喺呢部裝置保持登入狀態（30 日）",
+    "remember_label": "喺呢部裝置保持登入狀態",
     "login_button": "登入",
     "login_error": "電郵地址或密碼不正確。",
     "terms_expander": "閱讀完整的參與條款、健康免責聲明及私隱告示",
@@ -26,7 +28,10 @@
     "err_exists": "此電郵地址已經登記，請直接登入。",
     "sex_option_unspecified": "不願透露",
     "sex_option_male": "男性",
-    "sex_option_female": "女性"
+    "sex_option_female": "女性",
+    "orientation_lead": "一個專為喺屋企而設嘅簡易 5 星期運動計劃 — 費用全免。",
+    "orientation_body": "專為 60 歲或以上成年人設計。每日只需約 15–30 分鐘：包括呼吸練習同 3 個簡單動作。",
+    "orientation_account": "免費建立帳戶（電郵 + 密碼）可以儲存你嘅進度，讓計劃自動為你調整。完全無需付款，亦無任何訂閱需要取消。"
   },
   "hub": {
     "title": "歡迎，{username} 👋",
@@ -79,13 +84,34 @@
     "sls_left": "單腳站立 — 左腳（秒）",
     "sls_right": "單腳站立 — 右腳（秒）",
     "submit": "完成每週回顧",
-    "ack_error": "請先勾選確認上方的等級變更，先可以繼續。"
+    "ack_error": "請先勾選確認上方的等級變更，先可以繼續。",
+    "why_title": "點解我哋每星期都要再量度",
+    "why_body": "呢啲簡短嘅檢查可以讓計劃追蹤你嘅進度並調整運動項目。好多人都會發現自己嘅數值隨住星期推進而改善 — 你嘅數據會展示你嘅進步狀況。",
+    "baseline_title": "你嘅初始測量數據（第 1 日）",
+    "baseline_sls": "單腳站立 — 左腳：{left} 秒 · 右腳：{right} 秒",
+    "baseline_ref": "你第 1 日嘅結果：{value} 秒",
+    "chart_day1": "第 1 日",
+    "chart_week": "第 {n} 星期",
+    "reference_level": "參考水平",
+    "y_seconds": "秒",
+    "y_count": "次數"
   },
   "summary": {
     "title": "運動完成！🎉",
     "completed": "已完成運動組數：{n}",
     "avg_rpe": "平均自覺強度 (RPE)：{avg} / 5",
-    "return_hub": "返回每日主頁"
+    "return_hub": "返回每日主頁",
+    "congrats": "做得好，{username}！",
+    "trained_today": "你今日鍛鍊咗：",
+    "region_C": "你嘅小腿及下肢",
+    "region_PC": "你嘅核心及盆底肌",
+    "region_G": "你嘅臀部及髖關節",
+    "region_HF": "你嘅踏步及抬腿能力",
+    "region_SP": "你嘅肩膀及上背",
+    "region_CM": "你嘅心肺、血液循環及關節活動幅度",
+    "sessions_week": "你本週已完成 6 次訓練中嘅 {n} 次。",
+    "adjust_note": "系統會根據你回報嘅自覺強度自動調整下星期的內容 — 你無須手動更改任何設定。",
+    "habit_note": "每次訓練開始時嘅呼吸練習有助你放鬆身心 — 聽日見！"
   },
   "program_complete": {
     "title": "🎉 成功完成整個課程！",
@@ -114,7 +140,15 @@
     "total": "總分：{total}/16（分數越低，身體功能越好）",
     "preference_summary": "你嘅偏好：{preference}",
     "assigned_level": "### 分派等級：{level}",
-    "confirm": "確認並開始訓練"
+    "confirm": "確認並開始訓練",
+    "back": "上一步",
+    "confirm_intro": "以下係你嘅回答摘要。如果需要修改，請按「上一步」，確認無誤後按「確認」即可開始。",
+    "measure_sarcf": "SARC-F 問卷：{score} / 10 — 日常動作嘅輕鬆程度",
+    "measure_calf": "小腿圍：{score} / 2 — 腿部肌肉量",
+    "measure_balance": "平衡力：{score} / 2 — 單腳站立",
+    "measure_chair": "坐姿起立：{score} / 2 — 從椅子站立",
+    "score_legend": "喺各項測量中，0 分代表最佳狀況。",
+    "level_note": "運動將會由適合你目前狀況嘅等級開始，計劃隨後會逐漸為你進行調整。"
   },
   "sarc_f": {
     "subheader": "SARC-F 少肌症風險評估問卷",
@@ -158,5 +192,20 @@
     "Level 2": "等級 2 (扶物站立)",
     "Level 3": "等級 3 (獨立站立)",
     "Level 4": "等級 4 (動態站立)"
+  },
+  "hints": {
+    "got_it": "知道了",
+    "hub_title": "歡迎！以下係運作方式",
+    "hub_body": "每日只需按 開始今日運動 並順着頁面完成 — 先做呼吸練習，再做 3 個短運動。全程約需 15–30 分鐘。\n\n按一下 知道了 即可隱藏此提示。你隨時可以喺下方重新開啟 使用指南。",
+    "breathing_title": "第一次嚟？跟住圓環節奏",
+    "breathing_body": "按 ▶ 開始呼吸圓環 並跟住節奏呼吸 — 吸氣時圓環會變大，呼氣時會縮小，完成練習後會自動停止。按一下 🔊 播放 可以收聽朗讀指引。",
+    "training_title": "你今日嘅運動項目",
+    "training_body": "請閱讀每個卡片、參考圖片並跟住步驟做。按一下 🔊 播放 可以收聽指引。完成每個運動後，請選擇你感覺嘅辛苦程度 — 然後按頁面底部的 提交今日紀錄。",
+    "summary_title": "做得好 — 今日嘅訓練已經完成！",
+    "summary_body": "按一下 返回每日主頁，聽日再嚟進行下一次訓練。",
+    "rest_title": "休息同每週回顧日",
+    "rest_body": "今日比較輕鬆 — 無須做運動。回答幾條關於你本週狀況嘅簡短問題，有助計劃調整你嘅運動強度。準備好就可以按 開始每週回顧。",
+    "help_label": "使用指南",
+    "help_body": "• 每日按下 開始今日運動 並順着頁面完成。\n• 每次訓練：呼吸練習，然後 3 個運動（約 15–30 分鐘）。\n• 完成每個運動後，回報自覺強度，然後提交紀錄。\n• 每星期有一日係休息同每週回顧日。\n• 按一下 🔊 播放 可以收聽朗讀指引。\n• 將呢頁加到書籤以保持登入狀態。"
   }
 }

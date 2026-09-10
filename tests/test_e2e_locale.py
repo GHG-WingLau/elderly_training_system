@@ -1,22 +1,12 @@
 """Per-locale E2E smoke (decision 7.5) — the zh-HK activation check.
 
-Drives the REAL flows with data-driven label reads: expected labels
-come from data/ui_strings.zh-HK.json (and consent.zh-HK.json for the
-consent checkbox) — the helpers_e2e consent-label precedent, extended.
-The locale is switched through the REAL picker (all three locales now
-ship), so each test exercises picker wiring + query-param persistence
-+ boot resolution + rendering + the registration evidence chain in one
-pass.
+v3: + test_sex_default_follows_locale — the Phase 10 v3 fix (the sex
+selectbox key is locale-tagged; before it, a live locale switch left
+the widget displaying the stale EN option).
 
-v2 fix: the EN file keeps the BASE filename (ui_strings.json — 7.3);
-the v1 helper built ui_strings.en.json (the smokes failed on their own
-setup — the newest-lines rule caught my helper, not the app). The
-consent helper is made symmetric for the same trap.
-
-Default-locale (en) runs elsewhere in the suite are untouched (the 7.5
-strategy); this file pins the zh-HK activation. zh-TW rides the same
-machinery via the data/completeness contracts; a mirrored smoke can be
-added later if wanted.
+[Phase 7 history unchanged — see prior docstring: data-driven label
+reads; the REAL picker; the EN base-filename rule; zh-TW rides the
+data/completeness contracts.]
 """
 from __future__ import annotations
 
@@ -95,3 +85,14 @@ def test_zh_hk_login_hub_smoke(tmp_path, monkeypatch):
     at.run()
     assert "歡迎" in rendered_text(at)
     assert "等級 2 (扶物站立)" in rendered_text(at)
+
+
+def test_sex_default_follows_locale(tmp_path, monkeypatch):
+    """Phase 10 v3: after a live locale switch, the sex selectbox
+    defaults to the LOCALIZED first option — not the stale EN string
+    (widget state persists by key while the option list changes with
+    the locale; the key is locale-tagged — the picker/RPE class)."""
+    at = make_app(tmp_path, monkeypatch)
+    _select_locale(at, HK)
+    box = _find(at.selectbox, _tr(HK, "auth.sex_label"))
+    assert box.value == _tr(HK, "auth.sex_option_unspecified")

@@ -64,3 +64,12 @@ clear_session_state does NOT reset locale (UI preference, not authstate); logout
 Views read st.session_state["locale"] (or utils.locale.get_locale());no view reads ?lang= directly. Data loaders and utils.strings resolvevia utils.locale.safe_locale() (bare-mode-safe; no session context →"en"). Per-locale caches are process-lifetime — dev-server restartafter data edits.
 A zh registration records consent_version "v1.1-zh-HK"/"v1.1-zh-TW"(§7.8) and users.locale (decision (a)) at create_user; the wizardpreference selectbox is index-mapped to Level {i} (stored levelvalues never localize; display names come fromutils.strings.level_display, keyed by the stored EN values).
 Tab title: set_page_config localizes from ?lang= at FIRST load only(set_page_config applies once per page load; a mid-session switchre-titles on the next reload — documented trade-off).
+
+Phase 8 — first-run guidance
+No new session keys (hint state rides the users row: users.ui_hintsJSONB — read from the session user dict, refreshed after each dismissper the Phase 4 rule). The bookmark tip is now dismiss-once (ui_hintskey "bookmark_tip"), still shown only while ?t= is present — thePhase 6 post-beta refinement, implemented.
+
+Phase 9 — retention & motivation
+No new session keys. users.baseline (JSONB, additive — the locale/ui_hints pattern) stores the onboarding raw measures: written once atwizard confirmation (standard path only — the red-flag fast-pathcollects no measures; re-assessment overwrites, latest-wins), readfrom the session user dict on the rest page (refreshed per the Phase 4rule after writes).
+
+Phase 10 — wizard back navigation + chart v3
+onboarding_step may now DECREASE (signed off, flow-only): Back buttonsrender above each step's form (Steps 1–3 → previous; Step 4 → derived:Step 0 for the red-flag fast path, Step 3 otherwise —onboarding_wizard._previous_step, pure). Entered widget values persistby key — no data loss. No new session keys.

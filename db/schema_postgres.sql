@@ -1,17 +1,26 @@
 -- Elderly Online Training System — PostgreSQL DDL (Phase 6 deployment port)
 -- Idempotent: applied on first connection (CREATE ... IF NOT EXISTS).
 -- Split on ';' by db/database.py after stripping full-line '--' comments:
--- no ';' inside string literals; '--' comments only.
+-- no ';' inside string literals; '--' comments only. (Consequence: no
+-- DO $$...$$ guard blocks — they contain internal semicolons; migrations
+-- must be plain splitter-safe statements.)
 --
 -- password_hash / consent_* / sessions are the FINAL schema shape,
 -- ACTIVATED by the Step-2 auth hardening — nullable and inert until
 -- then (authored now to avoid a second migration on a not-yet-deployed DB).
 --
--- Phase 7 (localization, 7.4): users.locale added — the first post-
--- "final-shape" schema amendment. Nullable, no backfill; NULL = fall
--- through the locale resolution chain. Fresh DBs receive the column from
--- CREATE TABLE below; existing DBs (local Docker, live Neon MAIN) receive
--- it from the idempotent ALTER — no manual migration, lands at next boot.
+-- Phase 7 (localization, 7.4): users.locale — additive, nullable.
+-- Phase 8 (first-run guidance): users.ui_hints — additive, nullable.
+-- Phase 9 (retention): users.baseline — additive, nullable; and the
+-- FIRST TYPE-WIDENING: rest_assessments.sls_left_sec / sls_right_sec
+-- INTEGER -> REAL. Rationale: both the baseline and the weekly forms
+-- collect 0.5-step values (#7's motor-precision grid) — int() truncation
+-- silently discarded the halves; the Phase 9 chart compares baseline
+-- (JSONB, exact) with weekly values and exposed the loss. 0.5-grid
+-- values are binary-exact in REAL; existing int values convert losslessly
+-- (12 -> 12.0). Existing DBs: one-time tiny-table rewrite via the ALTERs
+-- below; fresh DBs get REAL from CREATE; re-running the ALTER on an
+-- already-REAL column is a no-op (same type — no rewrite).
 
 CREATE TABLE IF NOT EXISTS users (
   email TEXT PRIMARY KEY,
@@ -29,10 +38,14 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash TEXT,
   consent_version TEXT,
   consent_accepted_at TIMESTAMPTZ,
-  locale TEXT
+  locale TEXT,
+  ui_hints JSONB,
+  baseline JSONB
 );
 
 ALTER TABLE users ADD COLUMN IF NOT EXISTS locale TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS ui_hints JSONB;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS baseline JSONB;
 
 CREATE TABLE IF NOT EXISTS training_progress (
   id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -62,8 +75,8 @@ CREATE TABLE IF NOT EXISTS rest_assessments (
   memory_recall_count INTEGER,
   reflection TEXT,
   sit_to_stand_15s_cycles INTEGER,
-  sls_left_sec INTEGER,
-  sls_right_sec INTEGER,
+  sls_left_sec REAL,
+  sls_right_sec REAL,
   UNIQUE (user_email, cycle, week)
 );
 
@@ -73,6 +86,12 @@ CREATE TABLE IF NOT EXISTS sessions (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   expires_at TIMESTAMPTZ NOT NULL
 );
+
+-- Phase 9 type widening (int -> real) for existing DBs; no-op when
+-- already REAL (same type — no rewrite). Splitter-safe: one statement,
+-- no internal semicolons.
+ALTER TABLE rest_assessments ALTER COLUMN sls_left_sec TYPE real;
+ALTER TABLE rest_assessments ALTER COLUMN sls_right_sec TYPE real;
 
 CREATE INDEX IF NOT EXISTS idx_progress_user
   ON training_progress (user_email, cycle);

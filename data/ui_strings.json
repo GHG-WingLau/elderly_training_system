@@ -1,12 +1,14 @@
 {
-  "app": {"page_title": "Elderly Training"},
+  "app": {
+    "page_title": "Elderly Training"
+  },
   "auth": {
     "title": "🏃 Elderly Online Training System",
     "tab_returning": "Returning User",
     "tab_new": "New User",
     "email": "Email",
     "password": "Password",
-    "remember_label": "Keep me logged in on this device (30 days)",
+    "remember_label": "Keep me logged in on this device",
     "login_button": "Log In",
     "login_error": "Email or password is incorrect.",
     "terms_expander": "Read the full Terms of Participation, Health Waiver, and Privacy Notice",
@@ -26,7 +28,10 @@
     "err_exists": "An account with this email already exists. Please log in instead.",
     "sex_option_unspecified": "Prefer not to say",
     "sex_option_male": "Male",
-    "sex_option_female": "Female"
+    "sex_option_female": "Female",
+    "orientation_lead": "A gentle 5-week exercise program you can do at home — free.",
+    "orientation_body": "Designed for adults 60+. Each day takes about 15–30 minutes: a breathing practice plus 3 simple exercises.",
+    "orientation_account": "Creating a free account (email + password) saves your progress so the program can adapt to you. There is no payment and nothing to cancel."
   },
   "hub": {
     "title": "Welcome, {username} 👋",
@@ -79,13 +84,34 @@
     "sls_left": "Single-leg stance — left (sec)",
     "sls_right": "Single-leg stance — right (sec)",
     "submit": "Complete Weekly Review",
-    "ack_error": "Please confirm the level change above to continue."
+    "ack_error": "Please confirm the level change above to continue.",
+    "why_title": "Why we measure again each week",
+    "why_body": "These quick checks let the program follow your progress and adjust your exercises. Many people see their numbers improve over the weeks — yours will show you how you are doing.",
+    "baseline_title": "Your starting measurements (Day 1)",
+    "baseline_sls": "Single-leg stance — left: {left} sec · right: {right} sec",
+    "baseline_ref": "Your Day 1 result: {value} sec",
+    "chart_day1": "Day 1",
+    "chart_week": "Week {n}",
+    "reference_level": "Reference level",
+    "y_seconds": "Seconds",
+    "y_count": "No. of times"
   },
   "summary": {
     "title": "Workout Complete! 🎉",
     "completed": "**Exercises completed:** {n}",
     "avg_rpe": "**Average RPE:** {avg} / 5",
-    "return_hub": "Return to Daily Hub"
+    "return_hub": "Return to Daily Hub",
+    "congrats": "Well done, {username}!",
+    "trained_today": "Today you trained:",
+    "region_C": "Your calves and lower legs",
+    "region_PC": "Your core and pelvic floor",
+    "region_G": "Your hips and buttocks",
+    "region_HF": "Your stepping and leg lifting",
+    "region_SP": "Your shoulders and upper back",
+    "region_CM": "Your heart, circulation and mobility",
+    "sessions_week": "You have completed **{n} of 6** training sessions this week.",
+    "adjust_note": "Your effort ratings are how the program adjusts itself for next week — there is nothing you need to change.",
+    "habit_note": "The breathing practice at the start of every session helps you settle in — see you tomorrow!"
   },
   "program_complete": {
     "title": "🎉 Program Complete!",
@@ -114,7 +140,15 @@
     "total": "**Total:** {total}/16 (lower = higher function)",
     "preference_summary": "**Your preference:** {preference}",
     "assigned_level": "### Assigned level: {level}",
-    "confirm": "Confirm and start training"
+    "confirm": "Confirm and start training",
+    "back": "Back",
+    "confirm_intro": "Here is a summary of your answers. Press Back to change anything, then Confirm to begin.",
+    "measure_sarcf": "SARC-F: {score} / 10 — how easy everyday movements feel",
+    "measure_calf": "Calf: {score} / 2 — leg muscle size",
+    "measure_balance": "Balance: {score} / 2 — standing on one leg",
+    "measure_chair": "Chair-stand: {score} / 2 — getting up from a chair",
+    "score_legend": "0 is the best score on every measure.",
+    "level_note": "The exercises will start at a level that matches how you feel today, and the program adjusts as you go."
   },
   "sarc_f": {
     "subheader": "SARC-F Questionnaire",
@@ -158,5 +192,20 @@
     "Level 2": "Level 2 (Supported Standing)",
     "Level 3": "Level 3 (Independent Standing)",
     "Level 4": "Level 4 (Dynamic Standing)"
+  },
+  "hints": {
+    "got_it": "Got it",
+    "hub_title": "Welcome! Here's how it works",
+    "hub_body": "Every day, press **Start Today's Workout** and follow the pages — breathing first, then 3 short exercises. It takes about 15–30 minutes.\n\nTap **Got it** to hide this tip. You can always reopen **How to use** below.",
+    "breathing_title": "First time here? Follow the circle",
+    "breathing_body": "Press **▶ Start the breathing circle** and breathe with it — it grows as you breathe in and shrinks as you breathe out, and stops by itself when the practice is done. Tap 🔊 play to hear the instructions read aloud.",
+    "training_title": "Your exercises for today",
+    "training_body": "Read each card, look at the picture, and follow the steps. Tap 🔊 play to hear the instructions. After each exercise, choose how it felt — then press **Submit Workout** at the bottom of the page.",
+    "summary_title": "Well done — that's today's session complete!",
+    "summary_body": "Press **Return to Daily Hub** and come back tomorrow for your next session.",
+    "rest_title": "Rest and review day",
+    "rest_body": "Today is lighter — no exercises. A few short questions about your week help the program adjust your exercises. Press **Start Weekly Review** when you're ready.",
+    "help_label": "How to use",
+    "help_body": "• Press **Start Today's Workout** each day and follow the pages.\n• Each session: breathing practice, then 3 exercises (~15–30 min).\n• After each exercise, say how it felt, then submit.\n• One day a week is a rest and review day.\n• Use 🔊 play to hear the instructions read aloud.\n• Bookmark this page to stay logged in."
   }
 }
